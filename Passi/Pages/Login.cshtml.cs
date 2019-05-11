@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Security;
+using System.DirectoryServices.Protocols;
 
 namespace Passi.Pages
 {
@@ -19,6 +20,8 @@ namespace Passi.Pages
             var username = Request.Form["username"];
             var password = Request.Form["password"];
             var domain = Request.Form["domain"];
+
+            LdapConnection ldapConnection = new LdapConnection(new LdapDirectoryIdentifier(domain));
         }
         
     }
