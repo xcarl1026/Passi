@@ -30,8 +30,9 @@ namespace Passi
                 options.CheckConsentNeeded = context => true;
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
-
-
+            //added sessions
+            services.AddSession();
+            services.AddMemoryCache();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
 
@@ -47,7 +48,8 @@ namespace Passi
                 app.UseExceptionHandler("/Error");
                 app.UseHsts();
             }
-
+            //added ssession
+            app.UseSession();
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseCookiePolicy();
