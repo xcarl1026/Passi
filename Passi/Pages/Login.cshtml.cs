@@ -45,7 +45,7 @@ namespace Passi.Pages
             }
 
             var page = (authenticated == true) ? "/success" : "/Index";
-            Response.Redirect(page);
+            RedirectToPage(page, userConnection);
 
             /*if (authenticated == true)
             {
