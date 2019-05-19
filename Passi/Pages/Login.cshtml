@@ -9,15 +9,15 @@
 <form asp-page="login" method="post">
     <div class="form-group">
         <label for="Domain">Domain: </label>
-        <input asp-for="Domain" type="text" class="form-control" id="domain" placeholder="Enter Domain">
+        <input type="text" class="form-control" name="domain" placeholder="Enter Domain">
     </div>
     <div class="form-group">
         <label for="text">Username: </label>
-        <input asp-for="Username" type="text" class="form-control" id="username" placeholder="Enter Username">
+        <input type="text" class="form-control" name="username" placeholder="Enter Username">
     </div>
     <div class="form-group">
         <label for="pwd">Password:</label>
-        <input asp-for="Password" type="password" class="form-control" id="pwd" placeholder="Enter password">
+        <input type="password" class="form-control" name="password" placeholder="Enter password">
     </div>
     <button type="submit" class="btn btn-default">Submit</button>
 </form>

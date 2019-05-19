@@ -14,40 +14,40 @@ namespace Passi.Pages
     public class LoginModel : PageModel
     {
 
-        public string Message { get; set; }
-        public string Domain { get; set; }
-        public string Username { get; set; }
-        public string Password { get; set; }
 
+        UserConnection userConnection;
 
         public void OnGet()
         {
             //Message = "Enter your message here";
         }
 
-        public void OnPost()
+        public void OnPost(string domain, string username, string password)
         {
 
-            Domain = Request.Form[nameof(Domain)];
-            Console.WriteLine("YOOOOOO  " + Domain);
-            Username = Request.Form[nameof(Username)];
-            Console.WriteLine("YOOOOOO  " + Username);
-            Password = Request.Form[nameof(Password)];
-            Console.WriteLine("YOOOOOO  " + Password);
-
-
             bool authenticated = false;
+            if (authenticated == false)
+            {
+                Console.WriteLine("YOOOOO " + username);
+                Console.WriteLine("YOOOOO " + domain);
+                Console.WriteLine("YOOOOO " + password);
+                try
+                {
+                    userConnection = new UserConnection(Request.Form[domain], Request.Form[username], Request.Form[password]);
+                    authenticated = userConnection.Authenticated;
+                    
+                }
+                catch(Exception e)
+                {
+                    Console.WriteLine(e.Message);
+                }
+                
+            }
 
-            if (!String.IsNullOrEmpty(Username) && !String.IsNullOrEmpty(Password) && authenticated==false)
-            {
-               authenticated = AuthenticatedUsers.ValidateUser(Domain, Username, Password);
-            }
-            else
-            {
-                Response.Redirect("/Index");
-            }
-            
-            if(authenticated == true)
+            var page = (authenticated == true) ? "/success" : "/Index";
+            Response.Redirect(page);
+
+            /*if (authenticated == true)
             {
                 HttpContext.Session.SetString("Name", "yo");
                 Response.Redirect("/success");
@@ -55,7 +55,7 @@ namespace Passi.Pages
             else
             {
                 Response.Redirect("/Index");
-            }
+            }*/
 
         }
         

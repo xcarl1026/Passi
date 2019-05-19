@@ -12,26 +12,39 @@ using Microsoft.Extensions.Primitives;
 using System.DirectoryServices;
 using System.Net;
 using System.Security.Permissions;
+using System.DirectoryServices.AccountManagement;
 
 namespace Passi.Pages.Models
 {
-    public class AuthenticatedUsers
+    public class UserConnection
     {
+        public string User { get; set; }
+        public PrincipalContext Connection { get; set; }
+        public bool Authenticated { get; set; }
+        public UserConnection(string domain, string username, string password)
+        {
+            User = username;
+            
+            Connection = new PrincipalContext(ContextType.Domain, domain, username, password);
+            Authenticated = Connection.ValidateCredentials(username, password, ContextOptions.SimpleBind);
+            Console.WriteLine(Authenticated);
+            
 
-        public static bool ValidateUser(string domain, string username, string password)
+        }
+
+        /* public static bool ValidateUser(string domain, string username, string password)
         {
             bool authenticated = false;
             try
             {
                 // Create the new LDAP connection
                 LdapDirectoryIdentifier ldi = new LdapDirectoryIdentifier(domain);
-                System.DirectoryServices.Protocols.LdapConnection ldapConnection =
-                    new System.DirectoryServices.Protocols.LdapConnection(ldi);
+                LdapConnection ldapConnection = new LdapConnection(ldi);
                 Console.WriteLine("LdapConnection is created successfully.");
                 ldapConnection.AuthType = AuthType.Negotiate;
                 ldapConnection.SessionOptions.ProtocolVersion = 3;
                 NetworkCredential nc = new NetworkCredential(username,
-                   password); //password
+                    password); //password
                 ldapConnection.Bind(nc);
                 Console.WriteLine("LdapConnection authentication success");
                 ldapConnection.Dispose();
@@ -46,7 +59,7 @@ namespace Passi.Pages.Models
                 Console.WriteLine("\r\nUnexpected exception occured:\r\n\t" + e.GetType() + ":" + e.Message);
             }
             return authenticated;
-        }
+        }*/
 
 
     }
