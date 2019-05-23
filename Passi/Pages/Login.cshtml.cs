@@ -8,6 +8,9 @@ using System.Security;
 using System.DirectoryServices.Protocols;
 using Passi.Pages.Models;
 using Microsoft.AspNetCore.Http;
+using System.Xml.Serialization;
+using System.IO;
+using System.DirectoryServices.AccountManagement;
 
 namespace Passi.Pages
 {
@@ -19,44 +22,38 @@ namespace Passi.Pages
 
         public void OnGet()
         {
-            //Message = "Enter your message here";
+            
         }
 
         public void OnPost(string domain, string username, string password)
         {
-
+             
             bool authenticated = false;
             if (authenticated == false)
             {
                 Console.WriteLine("YOOOOO " + username);
                 Console.WriteLine("YOOOOO " + domain);
                 Console.WriteLine("YOOOOO " + password);
-                try
-                {
-                    userConnection = new UserConnection(Request.Form[domain], Request.Form[username], Request.Form[password]);
-                    authenticated = userConnection.Authenticated;
-                    
-                }
-                catch(Exception e)
-                {
-                    Console.WriteLine(e.Message);
-                }
+                userConnection = new UserConnection(domain, username, password);
+                authenticated = userConnection.Authenticated;                  
                 
             }
+           
+            
+                byte[] tempByte = ProtoSerializer.ProtoSerialize<UserConnection>(userConnection);
+                HttpContext.Session.Set("userConnection", tempByte);
+            
+
+             UserConnection test = ProtoSerializer.ProtoDeserialize<UserConnection>(tempByte);
+            //HttpContext.Session.Get("userConnection"
+             string username2 = test.User;
+             PrincipalContext conn = test.PrincipalContext;
+            Console.WriteLine(userConnection.PrincipalContext.ToString());
+            Console.WriteLine(conn.ToString());
+            
 
             var page = (authenticated == true) ? "/success" : "/Index";
-            RedirectToPage(page, userConnection);
-
-            /*if (authenticated == true)
-            {
-                HttpContext.Session.SetString("Name", "yo");
-                Response.Redirect("/success");
-            }
-            else
-            {
-                Response.Redirect("/Index");
-            }*/
-
+            Response.Redirect(page);
         }
         
     }

@@ -13,54 +13,77 @@ using System.DirectoryServices;
 using System.Net;
 using System.Security.Permissions;
 using System.DirectoryServices.AccountManagement;
+using ProtoBuf;
 
 namespace Passi.Pages.Models
 {
+    [ProtoContract]
     public class UserConnection
     {
+        [ProtoMember(1)]
         public string User { get; set; }
-        public PrincipalContext Connection { get; set; }
+        [ProtoMember(2)]
+        public string Domain { get; set; }
+        // [ProtoMember(3)]
+        public PrincipalContext PrincipalContext { get; set; }
+        [ProtoMember(3)]
         public bool Authenticated { get; set; }
-        public UserConnection(string domain, string username, string password)
-        {
-            User = username;
-            
-            Connection = new PrincipalContext(ContextType.Domain, domain, username, password);
-            Authenticated = Connection.ValidateCredentials(username, password, ContextOptions.SimpleBind);
-            Console.WriteLine(Authenticated);
-            
 
+         public UserConnection(string domain, string username, string password)
+         {
+             User = username;
+             Domain = domain;
+
+             try
+             {
+                 PrincipalContext = new PrincipalContext(ContextType.Domain, domain, username, password);
+                 Authenticated = PrincipalContext.ValidateCredentials(username, password, ContextOptions.SimpleBind);
+             }
+             catch (PrincipalException e)
+             {
+                 Console.WriteLine(e.Message);
+             }
+             Console.WriteLine(Authenticated);
+
+         }
+
+        [ProtoMember(4)]
+        public PrincipalContextSurrogate PrincipalContextWrapper
+        {
+            get
+            {
+                return new PrincipalContextSurrogate(PrincipalContext);
+            }
+            set
+            {
+                PrincipalContext = value.ToPrincipalContext();
+            }
         }
 
-        /* public static bool ValidateUser(string domain, string username, string password)
-        {
-            bool authenticated = false;
-            try
-            {
-                // Create the new LDAP connection
-                LdapDirectoryIdentifier ldi = new LdapDirectoryIdentifier(domain);
-                LdapConnection ldapConnection = new LdapConnection(ldi);
-                Console.WriteLine("LdapConnection is created successfully.");
-                ldapConnection.AuthType = AuthType.Negotiate;
-                ldapConnection.SessionOptions.ProtocolVersion = 3;
-                NetworkCredential nc = new NetworkCredential(username,
-                    password); //password
-                ldapConnection.Bind(nc);
-                Console.WriteLine("LdapConnection authentication success");
-                ldapConnection.Dispose();
-                authenticated = true;
-            }
-            catch (LdapException e)
-            {
-                Console.WriteLine("\r\nUnable to login:\r\n\t" + e.Message);
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine("\r\nUnexpected exception occured:\r\n\t" + e.GetType() + ":" + e.Message);
-            }
-            return authenticated;
-        }*/
 
 
     }
+
+
+    [ProtoContract]
+    public class PrincipalContextSurrogate
+    {
+        public PrincipalContextSurrogate() { }
+
+        [ProtoMember(5)]
+        public ContextType ContextType { set; get; }
+        [ProtoMember(6)]
+        public string Name { set; get; }
+
+        public PrincipalContextSurrogate(PrincipalContext context)
+        {
+            ContextType = context.ContextType;
+            Name = context.Name;
+        }
+        public PrincipalContext ToPrincipalContext()
+        {
+            return new PrincipalContext(ContextType, Name);
+        }
+    }
+    
 }
