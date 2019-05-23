@@ -17,7 +17,7 @@ using ProtoBuf;
 
 namespace Passi.Pages.Models
 {
-    [ProtoContract]
+    [ProtoContract(SkipConstructor = true)]
     public class UserConnection
     {
         [ProtoMember(1)]
@@ -28,9 +28,10 @@ namespace Passi.Pages.Models
         public PrincipalContext PrincipalContext { get; set; }
         [ProtoMember(3)]
         public bool Authenticated { get; set; }
-
+         public UserConnection() { }
          public UserConnection(string domain, string username, string password)
          {
+            //domain username and stuff is setting to null
              User = username;
              Domain = domain;
 
@@ -46,7 +47,6 @@ namespace Passi.Pages.Models
              Console.WriteLine(Authenticated);
 
          }
-
         [ProtoMember(4)]
         public PrincipalContextSurrogate PrincipalContextWrapper
         {

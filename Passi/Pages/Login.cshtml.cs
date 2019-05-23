@@ -42,14 +42,17 @@ namespace Passi.Pages
             
                 byte[] tempByte = ProtoSerializer.ProtoSerialize<UserConnection>(userConnection);
                 HttpContext.Session.Set("userConnection", tempByte);
-            
 
-             UserConnection test = ProtoSerializer.ProtoDeserialize<UserConnection>(tempByte);
+           
+            
+            //string placeholder = String.Empty;
+           // UserConnection test = new UserConnection(placeholder, placeholder, placeholder);
+            UserConnection test = ProtoSerializer.ProtoDeserialize<UserConnection>(tempByte);
             //HttpContext.Session.Get("userConnection"
-             string username2 = test.User;
-             PrincipalContext conn = test.PrincipalContext;
-            Console.WriteLine(userConnection.PrincipalContext.ToString());
-            Console.WriteLine(conn.ToString());
+            // string username2 = test.User;
+             //PrincipalContext conn = test.PrincipalContext;
+            Console.WriteLine("YOO" + userConnection.PrincipalContext.ToString());
+           // Console.WriteLine(conn.ToString());
             
 
             var page = (authenticated == true) ? "/success" : "/Index";
