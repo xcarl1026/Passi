@@ -8,8 +8,6 @@ using System.Security;
 using System.DirectoryServices.Protocols;
 using Passi.Pages.Models;
 using Microsoft.AspNetCore.Http;
-using System.Xml.Serialization;
-using System.IO;
 using System.DirectoryServices.AccountManagement;
 
 namespace Passi.Pages
@@ -31,31 +29,15 @@ namespace Passi.Pages
             bool authenticated = false;
             if (authenticated == false)
             {
-                Console.WriteLine("YOOOOO " + username);
-                Console.WriteLine("YOOOOO " + domain);
-                Console.WriteLine("YOOOOO " + password);
+              
                 userConnection = new UserConnection(domain, username, password);
-                authenticated = userConnection.Authenticated;                  
-                
-            }
-           
-            
-                byte[] tempByte = ProtoSerializer.ProtoSerialize<UserConnection>(userConnection);
-                HttpContext.Session.Set("userConnection", tempByte);
+                authenticated = userConnection.Authenticated;
+                HttpContext.Session.SetString("Username", userConnection.User);
+                HttpContext.Session.SetString("Domain", userConnection.Domain);
+            }           
+          
 
-           
-            
-            //string placeholder = String.Empty;
-           // UserConnection test = new UserConnection(placeholder, placeholder, placeholder);
-            UserConnection test = ProtoSerializer.ProtoDeserialize<UserConnection>(tempByte);
-            //HttpContext.Session.Get("userConnection"
-            // string username2 = test.User;
-             //PrincipalContext conn = test.PrincipalContext;
-            Console.WriteLine("YOO" + userConnection.PrincipalContext.ToString());
-           // Console.WriteLine(conn.ToString());
-            
-
-            var page = (authenticated == true) ? "/success" : "/Index";
+            var page = (authenticated == true) ? "/Directory" : "/Login";
             Response.Redirect(page);
         }
         

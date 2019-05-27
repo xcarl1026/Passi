@@ -30,6 +30,13 @@ namespace Passi
                 options.CheckConsentNeeded = context => true;
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
+
+            services.AddMvc().AddRazorPagesOptions(options =>
+            {
+                options.Conventions.AddPageRoute("/Login", "");
+            });
+
+
             //added sessions
             services.AddSession();
             services.AddMemoryCache();
