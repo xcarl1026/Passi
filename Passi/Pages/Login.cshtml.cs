@@ -20,7 +20,10 @@ namespace Passi.Pages
 
         public void OnGet()
         {
-            
+            if (!string.IsNullOrEmpty(HttpContext.Session.GetString("Username")))
+            {
+                HttpContext.Session.Clear();
+            }
         }
 
         public void OnPost(string domain, string username, string password)
