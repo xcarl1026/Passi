@@ -28,7 +28,7 @@ namespace Passi.Pages.Models
 
             try
             {
-                PrincipalContext context = new PrincipalContext(ContextType.Domain, domain, username, password);
+                PrincipalContext context = new PrincipalContext(ContextType.Domain, domain);
                 Authenticated = context.ValidateCredentials(username, password, ContextOptions.SimpleBind);
                 context.Dispose();
             }

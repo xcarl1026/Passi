@@ -3,25 +3,30 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.DirectoryServices;
+using System.DirectoryServices.AccountManagement;
+using Microsoft.AspNetCore.Http;
+
 namespace Passi.Pages.Models
 {
     public class DirectorySearch
     {
         SearchResult searchResult { get; set; }
-        ADUser userResult { get; set; }
+        public UserPrincipal userResult { get; set; }
 
-        public DirectorySearch(string searchQuery)
+        public DirectorySearch(string searchQuery, string domain)
         {
-            userResult = ProcesUserGroups(searchQuery);
+            
+            PrincipalContext context = new PrincipalContext(ContextType.Domain, domain, "administrator", "Letmein123!");
+            userResult = UserPrincipal.FindByIdentity(context, searchQuery);
         }
 
-        private DirectoryEntry GetLdapConnection()
+        /*private DirectoryEntry GetLdapConnection()
         {
             
             DirectoryEntry ldapConnection = null;
             try
             {
-                ldapConnection = new DirectoryEntry("LDAP://192.168.1.15");
+                ldapConnection = new DirectoryEntry("LDAP://192.168.1.15:389");
             }
             catch (Exception e)
             {
@@ -81,6 +86,6 @@ namespace Passi.Pages.Models
                 }
 
             return user;
-        }
+        }*/
     }
 }
