@@ -9,9 +9,11 @@ namespace Passi.Pages
 {
     public class UserInfoGridModel : PageModel
     {
+        public string searchQuery { get; set; }
         public void OnGet()
         {
-           
+            searchQuery = RouteData.Values["searchQuery"].ToString();
+            Console.WriteLine(searchQuery);
         }
     }
 }
