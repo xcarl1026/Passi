@@ -17,11 +17,12 @@ namespace Passi.Pages
         
 
         public string Username { get; set; }
+        public string searchQuery { get; set; }
         public void OnGet()
         {
             Username = HttpContext.Session.GetString("Username");
         }
-
+        
         public void OnPostSearch(string searchQuery)
         {
             Username = HttpContext.Session.GetString("Username");
