@@ -13,7 +13,7 @@ namespace Passi.Pages
 {
     public class DirectoryModel : PageModel
     {
-        DirectorySearch directorySearch;
+        
         
 
         public string Username { get; set; }
@@ -26,10 +26,7 @@ namespace Passi.Pages
         public void OnPostSearch(string searchQuery)
         {
             Username = HttpContext.Session.GetString("Username");
-            Console.WriteLine("YOOOO " + searchQuery);
-             string domain = HttpContext.Session.GetString("Domain");
-            directorySearch = new DirectorySearch(searchQuery, domain);
-            Console.WriteLine("find anything?:  " + directorySearch.userResult.DisplayName);
+           
         }
 
       /*  public void OnPostLogout()

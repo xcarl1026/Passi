@@ -19,7 +19,7 @@
             <script>
                 document.getElementById('load').addEventListener('click', () => {
                     var searchQuery = document.getElementById("searchQuery").value;
-                    var page = '/UserInfoGrid/searchQuery='
+                    var page = '/UserInfoGrid/'
                     var url = page + searchQuery;
                     fetch(url)
                         .then((response) => {

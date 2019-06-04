@@ -20,6 +20,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Update="Pages\Shared\_Layout3Plain.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
     <Content Update="Pages\Shared\_Layout2.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
