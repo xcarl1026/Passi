@@ -16,7 +16,7 @@ namespace Passi.Pages
     {
 
 
-        UserConnection userConnection;
+        Authentication userConnection;
 
         public void OnGet()
         {
@@ -33,7 +33,7 @@ namespace Passi.Pages
             if (authenticated == false)
             {
               
-                userConnection = new UserConnection(domain, username, password);
+                userConnection = new Authentication(domain, username, password);
                 authenticated = userConnection.Authenticated;
                 HttpContext.Session.SetString("Username", userConnection.User);
                 HttpContext.Session.SetString("Domain", userConnection.Domain);

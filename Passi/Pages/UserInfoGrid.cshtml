@@ -4,13 +4,18 @@
     Layout = null;
 }
 
-<div class="container-fluid">
-    <!-- Control the column width, and how they should appear on different devices -->
-    <div class="row">
-        <div class="col-sm-1">Username:</div>
-        <div class="col-sm">@Model.ADUsername</div>
-        <div class="col-sm-1">Email:</div>
-        <div class="col-sm">@Model.ADEmailaddress</div>
+    <div class="container">
+        <!-- Control the column width, and how they should appear on different devices -->
+        <div>
+            <button type="submit" class="btn btn-default">Unlock Account</button>
+            <button type="submit" class="btn btn-default">Reset Pasword</button>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-1">Username:</div>
+            <div class="col-sm">@Model.ADUsername</div>
+            <div class="col-sm-1">Email:</div>
+            <div class="col-sm">@Model.ADEmailaddress</div>
+        </div>
     </div>
-</div>
 

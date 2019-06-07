@@ -15,9 +15,17 @@ namespace Passi.Pages.Models
 
         public DirectorySearch(string searchQuery, string domain)
         {
-            
-            PrincipalContext context = new PrincipalContext(ContextType.Domain, domain, "administrator", "Letmein123!");
-            userResult = UserPrincipal.FindByIdentity(context, searchQuery);
+            try
+            {
+                PrincipalContext context = new PrincipalContext(ContextType.Domain, domain, "administrator", "Letmein123!");
+                userResult = UserPrincipal.FindByIdentity(context, searchQuery);
+                context.Dispose();
+            }
+            catch (PrincipalException e)
+            {
+                Console.WriteLine(e.Message);
+            }
+           
         }
 
       }

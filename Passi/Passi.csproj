@@ -5,7 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Include="Pages\Models\UserConnection.cs" />
+    <Content Include="Pages\Models\Authentication.cs" />
   </ItemGroup>
 
   <ItemGroup>

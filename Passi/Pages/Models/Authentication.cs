@@ -15,13 +15,14 @@ using System.DirectoryServices.AccountManagement;
 
 namespace Passi.Pages.Models
 { 
-    public class UserConnection
+    public class Authentication
     {
         public string User { get; set; }
         public string Domain { get; set; }
         public bool Authenticated { get; set; }
+        
        
-        public UserConnection(string domain, string username, string password)
+        public Authentication(string domain, string username, string password)
         {
             User = username;
             Domain = domain;
@@ -31,6 +32,7 @@ namespace Passi.Pages.Models
                 PrincipalContext context = new PrincipalContext(ContextType.Domain, domain);
                 Authenticated = context.ValidateCredentials(username, password, ContextOptions.SimpleBind);
                 context.Dispose();
+               
             }
             catch (PrincipalException e)
             {
