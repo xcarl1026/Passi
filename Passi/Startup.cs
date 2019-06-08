@@ -36,7 +36,8 @@ namespace Passi
                 options.Conventions.AddPageRoute("/Login", "");
             });
 
-
+            //Antiforgery token
+            services.AddAntiforgery(o => o.HeaderName = "XSRF-TOKEN");
             //added sessions
             services.AddSession();
             services.AddMemoryCache();

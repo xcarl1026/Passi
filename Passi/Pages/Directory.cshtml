@@ -13,17 +13,44 @@
                     <h2>Welcome, @Model.Username </h2>
                     <p><h3>Search Directory</h3></p>
                     <div class="form-inline">
-                            <input type="text" class="form-control mr-sm-2" id="searchQuery" placeholder="Search" value="">
-                            <button class="btn btn-default my-2 my-sm-o" id="load">Load</button>
+                        <input type="text" class="form-control mr-sm-2" id="searchQuery" placeholder="Search" value="">
+                        <button class="btn btn-default my-2 my-sm-o" id="load">Load</button>
                     </div>
                 </div>
             </div>
-           
+
             <div class="row">
                 <div class="col-md-12">
                     <div id="grid"></div>
                 </div>
-            </div>            
+            </div>
+        </div>
+
+
+        <div class="modal" id="resetModal">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Modal title</h5>
+                        <button type="button" id="xModalBtn" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <p>Modal body text goes here.</p>
+                    </div>
+                    <div id="mfooter" class="modal-footer">
+                        <!--<form asp-page-handler="SearchADUser" method="post">
+
+    </form>-->
+                        <form method="post">
+                            <button type="button" id="resetpwsave" class="btn btn-primary">Save changes</button>
+                        </form>
+                        
+                        <button type="button" id="closeModalBtn" class="btn btn-secondary" data-dismiss="modal">Close</button>';
+                    </div>
+                </div>
+            </div>
         </div>
 
     }
@@ -32,31 +59,48 @@
         Response.Redirect("/Login");
     }
 
-    @section scripts{ 
-    <script>
-        document.getElementById('load').addEventListener('click', () => {
-            @Model.searchQuery = document.getElementById("searchQuery").value;
-            var page = '/UserInfoGrid/'
-            fetch(page)
-                .then((response) => {
-                    return response.text();
-                })
-                .then((result) => {
-                    document.getElementById('grid').innerHTML = result;
-                    document.getElementById('resetpw').addEventListener('click', () => {
-                        var resetModal = document.getElementById('resetModal');
-                        resetModal.style.display = "block";
-                        document.getElementById("xModalBtn").addEventListener('click', () => {
-                            resetModal.style.display = "none";
-                        });
-                        document.getElementById("closeModalBtn").addEventListener('click', () => {
-                            resetModal.style.display = "none";
-                    
+    @section scripts{
+        <script>
+            document.getElementById('load').addEventListener('click', () => {
+                var page = '/UserInfoGrid/'
+                fetch(page)
+                    .then((response) => {
+                        return response.text();
+                    })
+                    .then((result) => {
+                        document.getElementById('grid').innerHTML = result;
+                        document.getElementById('resetpw').addEventListener('click', () => {
+                            var resetModal = document.getElementById('resetModal');
+                            resetModal.style.display = "block";
+                            document.getElementById("xModalBtn").addEventListener('click', () => {
+                                resetModal.style.display = "none";
+                            });
+                            document.getElementById("closeModalBtn").addEventListener('click', () => {
+                                resetModal.style.display = "none";
+
+                            });
                         });
                     });
-                });
-        });
+            });
 
-    </script>
+            document.getElementById('resetpwsave').addEventListener('click', () => {
+                $.ajax({
+                    type: "POST",
+                    url: "/Directory?handler=SearchADUser",
+                    beforeSend: function (xhr) {
+                        xhr.setRequestHeader("XSRF-TOKEN",
+                        $('input:hidden[name="__RequestVerificationToken"]').val());
+                    },
+                    success: function (response) {
+                        alert('you good');
+                    },
+                    failure: function () {
+                        alert('nope');
+                    }
+                });
+            });
+
+
+        </script>
     }
 }

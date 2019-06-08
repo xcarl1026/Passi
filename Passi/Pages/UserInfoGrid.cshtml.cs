@@ -35,5 +35,10 @@ namespace Passi.Pages
         {
             directorySearch.userResult.SetPassword(pw);
         }
+
+        public void OnPostSearchADUser()
+        {
+            Console.Write("yo");
+        }
     }
 }

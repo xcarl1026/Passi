@@ -24,14 +24,15 @@ namespace Passi.Pages
             Username = HttpContext.Session.GetString("Username");
         }
 
-        public void OnGetSearchADUser(string searchQuery)
+        public void OnPostSearchADUser()
         {
             string domain = HttpContext.Session.GetString("Domain");
-            Console.WriteLine(searchQuery);
+            Console.WriteLine("We're here");
             /*directorySearch = new DirectorySearch(searchQuery, domain);
             ADUsername = directorySearch.userResult.SamAccountName;
             ADEmailaddress = directorySearch.userResult.EmailAddress;*/
         }
+
         
        /* public void OnPostSearch(string searchQuery)
         {
