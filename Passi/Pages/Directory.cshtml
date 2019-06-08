@@ -36,7 +36,6 @@
     <script>
         document.getElementById('load').addEventListener('click', () => {
             @Model.searchQuery = document.getElementById("searchQuery").value;
-            @Model.SearchADUser(Model.searchQuery)
             var page = '/UserInfoGrid/'
             fetch(page)
                 .then((response) => {
