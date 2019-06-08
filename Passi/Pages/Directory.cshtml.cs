@@ -13,21 +13,31 @@ namespace Passi.Pages
 {
     public class DirectoryModel : PageModel
     {
-        
-        
-
+        DirectorySearch directorySearch;
         public string Username { get; set; }
         public string searchQuery { get; set; }
+        public string ADUsername { get; set; }
+        public String ADEmailaddress { get; set; }
+
         public void OnGet()
         {
             Username = HttpContext.Session.GetString("Username");
         }
+
+        public void OnGetSearchADUser(string searchQuery)
+        {
+            string domain = HttpContext.Session.GetString("Domain");
+            Console.WriteLine(searchQuery);
+            /*directorySearch = new DirectorySearch(searchQuery, domain);
+            ADUsername = directorySearch.userResult.SamAccountName;
+            ADEmailaddress = directorySearch.userResult.EmailAddress;*/
+        }
         
-        public void OnPostSearch(string searchQuery)
+       /* public void OnPostSearch(string searchQuery)
         {
             Username = HttpContext.Session.GetString("Username");
            
-        }
+        }*/
 
       /*  public void OnPostLogout()
         {

@@ -17,13 +17,13 @@ namespace Passi.Pages
         public String ADEmailaddress { get; set; }
         public void OnGet()
         {
-            searchQuery = RouteData.Values["searchQuery"].ToString();
+           /* searchQuery = RouteData.Values["searchQuery"].ToString();
             Console.WriteLine(searchQuery);
             string domain = HttpContext.Session.GetString("Domain");
             directorySearch = new DirectorySearch(searchQuery, domain);
             ADUsername = directorySearch.userResult.SamAccountName;
             ADEmailaddress = directorySearch.userResult.EmailAddress;
-            //directorySearch.userResult.Dispose();
+            //directorySearch.userResult.Dispose();*/
         }
 
         public void UnlockAccount()
