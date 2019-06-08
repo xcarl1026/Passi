@@ -23,7 +23,17 @@ namespace Passi.Pages
             directorySearch = new DirectorySearch(searchQuery, domain);
             ADUsername = directorySearch.userResult.SamAccountName;
             ADEmailaddress = directorySearch.userResult.EmailAddress;
-            directorySearch.userResult.Dispose();
+            //directorySearch.userResult.Dispose();
+        }
+
+        public void UnlockAccount()
+        {
+            directorySearch.userResult.UnlockAccount();
+        }
+
+        public void ChangePassword(string pw)
+        {
+            directorySearch.userResult.SetPassword(pw);
         }
     }
 }

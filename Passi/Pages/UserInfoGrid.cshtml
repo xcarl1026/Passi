@@ -3,19 +3,39 @@
 @{
     Layout = null;
 }
+<script src="~/js/test.js"></script>
+<div class="container">
+    <!-- Control the column width, and how they should appear on different devices -->
+    <div>
+        <button class="btn btn-default" id="unlockacc">Unlock Account</button>
+        <button class="btn btn-default" id="resetpw">Reset Pasword</button>
+    </div>
 
-    <div class="container">
-        <!-- Control the column width, and how they should appear on different devices -->
-        <div>
-            <button type="submit" class="btn btn-default">Unlock Account</button>
-            <button type="submit" class="btn btn-default">Reset Pasword</button>
-        </div>
+    <div class="row">
+        <div class="col-sm-1">Username:</div>
+        <div class="col-sm">@Model.ADUsername</div>
+        <div class="col-sm-1">Email:</div>
+        <div class="col-sm">@Model.ADEmailaddress</div>
+    </div>
+</div>
 
-        <div class="row">
-            <div class="col-sm-1">Username:</div>
-            <div class="col-sm">@Model.ADUsername</div>
-            <div class="col-sm-1">Email:</div>
-            <div class="col-sm">@Model.ADEmailaddress</div>
+<div class="modal" id="resetModal">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Modal title</h5>
+                <button type="button" id="xModalBtn" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Modal body text goes here.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary">Save changes</button>
+                <button type="button" id="closeModalBtn" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
         </div>
     </div>
+</div>
 
