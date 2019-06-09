@@ -15,7 +15,7 @@
                     <p><h3>Search Directory</h3></p>
                     <div class="form-inline">
                             <input  type="text" class="form-control mr-sm-2" id="searchQuery" placeholder="Search" value="">
-                            <button class="btn btn-default my-2 my-sm-o" id="searchADUser">Search AD</button>                       
+                            <button class="btn btn-default my-2 my-sm-o" id="searchADUser">Search AD</button> 
                     </div>
                 </div>
             </div>
@@ -35,15 +35,18 @@
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
-                    <div class="modal-body">
-                        <input type="text" class="form-control mr-sm-2" id="resetPWIn" placeholder="Enter Password" value="">
-                    </div>
-                    <div id="mfooter" class="modal-footer">
-                        <form method="post">
-                            <button type="button" id="resetPWSave" name="pwIn" class="btn btn-primary">Save changes</button>
-                        </form>
-                        <button type="button" id="closeModalBtn" class="btn btn-secondary" data-dismiss="modal">Close</button>';
-                    </div>
+                    <form asp-page-handler="Test" method="post">
+                        <div class="modal-body">
+
+                            <input type="text" class="form-control mr-sm-2" name="pwIn" id="resetPWIn" placeholder="Enter Password" value="" />
+                        </div>
+                        <div id="mfooter" class="modal-footer">
+
+                            <button type="submit" id="resetPWSave" class="btn btn-primary">Save changes</button>
+
+                            <button type="button" id="closeModalBtn" class="btn btn-secondary" data-dismiss="modal">Close</button>';
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
@@ -87,12 +90,34 @@
                 }
             });
 
-          
-          document.getElementById('resetPWSave').addEventListener('click', () => {
+           /* document.getElementById('resetPWSave').addEventListener('click', () => {
+                postData('/Directory?handler=Test/', { answer: 42 })
+                    .then(data => console.log(JSON.stringify(data))) // JSON-string from `response.json()` call
+                    .catch(error => console.error(error));
+            });
+
+          function postData(url = '', data = {}) {
+          // Default options are marked with *
+            return fetch(url, {
+                method: 'POST', // *GET, POST, PUT, DELETE, etc.
+                mode: 'cors', // no-cors, cors, *same-origin
+                cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+                credentials: 'same-origin', // include, *same-origin, omit
+                headers: {
+                    'Content-Type': 'application/json',
+                    // 'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                redirect: 'follow', // manual, *follow, error
+                referrer: 'no-referrer', // no-referrer, *client
+                body: JSON.stringify(data), // body data type must match "Content-Type" header
+            })
+            .then(response => response.json()); // parses JSON response into native Javascript objects 
+            }*/
+          /*document.getElementById('resetPWSave').addEventListener('click', () => {
              //var input = $('#resetPWIn').val();
                 $.ajax({
                     type: "POST",
-                    url: "/UserInfoGrid?handler=Test/" + searchQuery,
+                    url: "/Directory?handler=Test/",
                     beforeSend: function (xhr) {
                         xhr.setRequestHeader("XSRF-TOKEN",
                             $('input:hidden[name="__RequestVerificationToken"]').val());
@@ -104,7 +129,7 @@
                         alert('nope');
                     }
                 });
-            });
+            });*/
             
 
             /*document.getElementById('resetPWSave').addEventListener('click', () => {

@@ -15,6 +15,11 @@ namespace Passi.Pages
     {
         public string Username { get; set; }
 
+        DirectorySearch directorySearch;
+        public string searchQuery { get; set; }
+        public string ADUsername { get; set; }
+        public String ADEmailaddress { get; set; }
+
         public void OnGet()
         {
             Username = HttpContext.Session.GetString("Username");
@@ -38,5 +43,13 @@ namespace Passi.Pages
             ADEmailaddress = directorySearch.userResult.EmailAddress;
         }*/
 
+        public void OnPostTest(string pwIn)
+        {
+            searchQuery = "lala";
+            string domain = HttpContext.Session.GetString("Domain");
+            directorySearch = new DirectorySearch(searchQuery, "nova");
+            directorySearch.userResult.SetPassword(pwIn);
+            Console.WriteLine(pwIn);
+        }
     }
 }
