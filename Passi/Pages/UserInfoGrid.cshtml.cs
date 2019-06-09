@@ -31,9 +31,10 @@ namespace Passi.Pages
             directorySearch.userResult.UnlockAccount();
         }
 
-        public void ChangePassword(string pw)
+        public void OnPostChangePassword()
         {
-            directorySearch.userResult.SetPassword(pw);
+            Console.WriteLine("BANKAI");
+            //directorySearch.userResult.SetPassword(pw);
         }
     }
 }

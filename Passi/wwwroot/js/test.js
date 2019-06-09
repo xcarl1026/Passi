@@ -18,8 +18,8 @@ document.getElementById('load').addEventListener('click', () => {
                 });
                 document.getElementById("closeModalBtn").addEventListener('click', () => {
                     resetModal.style.display = "none";
-                    
                 });
+               
             });
         });
 });
