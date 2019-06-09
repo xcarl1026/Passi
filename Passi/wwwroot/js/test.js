@@ -1,7 +1,14 @@
 
 document.getElementById('load').addEventListener('click', () => {
-    var page = '/UserInfoGrid/'
-    fetch(page)
+    var searchQuery = document.getElementById("searchQuery").value;
+    var page = '/Directory?handler=Search/'
+    var url = page + searchQuery;
+    fetch(url)
+   
+        
+
+    var page2 = '/UserInfoGrid/'
+    fetch(page2)
         .then((response) => {
             return response.text();
         })

@@ -35,6 +35,7 @@ namespace Passi.Pages
 
         public void OnGetSearch(string searchQuery)
         {
+            Console.WriteLine("Something");
             string domain = HttpContext.Session.GetString("Domain");
             directorySearch = new DirectorySearch(searchQuery, domain);
             ADUsername = directorySearch.userResult.SamAccountName;
