@@ -1,4 +1,4 @@
-﻿@page "{searchQuery}"
+﻿@page "{searchQuery?}"
 @model DirectoryModel
 @{
     ViewData["Title"] = "Directory";
@@ -81,7 +81,6 @@
                             });
                         });
                     });
-            });
 
             document.getElementById('resetpwsave').addEventListener('click', () => {
                 $.ajax({
