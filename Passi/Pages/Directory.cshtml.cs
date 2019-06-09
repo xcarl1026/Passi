@@ -33,6 +33,16 @@ namespace Passi.Pages
             ADEmailaddress = directorySearch.userResult.EmailAddress;*/
         }
 
+        public void OnGetSearch(string searchQuery)
+        {
+            string domain = HttpContext.Session.GetString("Domain");
+            directorySearch = new DirectorySearch(searchQuery, domain);
+            ADUsername = directorySearch.userResult.SamAccountName;
+            ADEmailaddress = directorySearch.userResult.EmailAddress;
+        }
+
+
+
         
        /* public void OnPostSearch(string searchQuery)
         {
