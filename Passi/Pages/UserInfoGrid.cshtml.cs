@@ -17,7 +17,7 @@ namespace Passi.Pages
         public String ADEmailaddress { get; set; }
         public void OnGet()
         {
-           /* searchQuery = RouteData.Values["searchQuery"].ToString();
+            searchQuery = RouteData.Values["searchQuery"].ToString();
             Console.WriteLine(searchQuery);
             string domain = HttpContext.Session.GetString("Domain");
             directorySearch = new DirectorySearch(searchQuery, domain);

@@ -1,4 +1,4 @@
-﻿@page
+﻿@page  "{searchQuery?}"
 @model UserInfoGridModel
 @{
     Layout = null;
@@ -13,9 +13,9 @@
 
     <div class="row">
         <div class="col-sm-1">Username:</div>
-        <div class="col-sm">Placeholder</div>
+        <div class="col-sm">@Model.ADUsername</div>
         <div class="col-sm-1">Email:</div>
-        <div class="col-sm">Placeholder</div>
+        <div class="col-sm">@Model.ADEmailaddress</div>
     </div>
 </div>
 
