@@ -1,4 +1,4 @@
-﻿@page
+﻿@page "{searchQuery}"
 @model DirectoryModel
 @{
     ViewData["Title"] = "Directory";
@@ -13,8 +13,8 @@
                     <h2>Welcome, @Model.Username </h2>
                     <p><h3>Search Directory</h3></p>
                     <div class="form-inline">
-                        <input type="text" class="form-control mr-sm-2" id="searchQuery" placeholder="Search" value="">
-                        <button class="btn btn-default my-2 my-sm-o" id="load">Load</button>
+                            <input  type="text" class="form-control mr-sm-2" id="searchQuery" placeholder="Search" value="">
+                            <button class="btn btn-default my-2 my-sm-o" id="load">Load</button>                       
                     </div>
                 </div>
             </div>
@@ -60,8 +60,8 @@
     }
 
     @section scripts{
-        <script>
-            document.getElementById('load').addEventListener('click', () => {
+        <script>       
+
                 var page = '/UserInfoGrid/'
                 fetch(page)
                     .then((response) => {
