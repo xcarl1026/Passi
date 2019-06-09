@@ -1,11 +1,10 @@
-﻿@page  "{searchQuery?}"
+﻿@page  "{searchQuery?}/{pw?}"
 @model UserInfoGridModel
 @{
     Layout = null;
 }
 <script src="~/js/test.js"></script>
 <div class="container">
-    <!-- Control the column width, and how they should appear on different devices -->
     <div>
         <button class="btn btn-default" id="unlockacc">Unlock Account</button>
         <button class="btn btn-default" id="resetpw">Reset Pasword</button>

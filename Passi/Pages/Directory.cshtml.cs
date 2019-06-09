@@ -13,51 +13,30 @@ namespace Passi.Pages
 {
     public class DirectoryModel : PageModel
     {
-        DirectorySearch directorySearch;
         public string Username { get; set; }
-        public string searchQuery { get; set; }
-        public string ADUsername { get; set; }
-        public String ADEmailaddress { get; set; }
 
         public void OnGet()
         {
             Username = HttpContext.Session.GetString("Username");
         }
 
-        public void OnPostSearchADUser(string searchQuery)
+       /* public void OnPostSearchADUser(string searchQuery)
         {
             string domain = HttpContext.Session.GetString("Domain");
             Console.WriteLine("We're here");
             /*directorySearch = new DirectorySearch(searchQuery, domain);
             ADUsername = directorySearch.userResult.SamAccountName;
-            ADEmailaddress = directorySearch.userResult.EmailAddress;*/
-        }
+            ADEmailaddress = directorySearch.userResult.EmailAddress;
+        }*/
 
-        public void OnGetSearch(string searchQuery)
+       /* public void OnGetSearch(string searchQuery)
         {
             Console.WriteLine("Something");
             string domain = HttpContext.Session.GetString("Domain");
             directorySearch = new DirectorySearch(searchQuery, domain);
             ADUsername = directorySearch.userResult.SamAccountName;
             ADEmailaddress = directorySearch.userResult.EmailAddress;
-        }
-
-
-
-        
-       /* public void OnPostSearch(string searchQuery)
-        {
-            Username = HttpContext.Session.GetString("Username");
-           
         }*/
-
-      /*  public void OnPostLogout()
-        {
-            HttpContext.Session.Clear();
-            Response.Redirect("/Login");
-            
-        }*/
-
 
     }
 }

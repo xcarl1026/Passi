@@ -6,6 +6,10 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Passi.Pages.Models;
 using Microsoft.AspNetCore.Http;
+using System.IO;
+using Newtonsoft.Json;
+using Microsoft.AspNetCore.Http;
+
 
 namespace Passi.Pages
 {
@@ -31,14 +35,30 @@ namespace Passi.Pages
             directorySearch.userResult.UnlockAccount();
         }
 
-        public void ChangePassword(string pw)
+        public void ChangePassword()
         {
-            directorySearch.userResult.SetPassword(pw);
+            searchQuery = RouteData.Values["searchQuery"].ToString();
+            string domain = HttpContext.Session.GetString("Domain");
+            directorySearch = new DirectorySearch(searchQuery, domain);
+            directorySearch.userResult.SetPassword(RouteData.Values["pw"].ToString());
         }
 
         public void OnPostSearchADUser()
         {
             Console.Write("yo");
         }
+
+        public void OnPostTest()
+        {
+            string pw = Request.Form["PwIn"];
+            Response.Redirect("/Directory");
+            
+            
+            // Console.WriteLine();
+        }
+
+       
     }
+
+  
 }
