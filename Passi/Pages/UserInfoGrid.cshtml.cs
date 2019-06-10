@@ -22,28 +22,16 @@ namespace Passi.Pages
         public String ADUserEmailAddress { get; set; }
         public void OnGet()
         {
-            /*searchQuery = RouteData.Values["searchQuery"].ToString();
+            searchQuery = RouteData.Values["searchQuery"].ToString();
             Console.WriteLine(searchQuery);
             string domain = HttpContext.Session.GetString("Domain");
             directorySearch = new DirectorySearch(searchQuery, domain);
-            ADUsername = directorySearch.userResult.SamAccountName;
-            ADEmailaddress = directorySearch.userResult.EmailAddress;
+            ADUserDisplayName = directorySearch.userResult.SamAccountName;
+            ADUserEmailAddress = directorySearch.userResult.EmailAddress;
             //directorySearch.userResult.Dispose();*/
         }
 
-        public void UnlockAccount()
-        {
-            directorySearch.userResult.UnlockAccount();
-        }
-
-        public void ChangePassword()
-        {
-            searchQuery = RouteData.Values["searchQuery"].ToString();
-            string domain = HttpContext.Session.GetString("Domain");
-            directorySearch = new DirectorySearch(searchQuery, domain);
-            directorySearch.userResult.SetPassword(RouteData.Values["pw"].ToString());
-        }
-
+       
         [HttpPost]
         public void OnPostSearchADUser(IFormCollection formCollection)
         {
@@ -54,32 +42,6 @@ namespace Passi.Pages
             ADUserDisplayName = adUser.DisplayName;
             ADUserEmailAddress = adUser.EmailAddress;*/
         }
-
-        public void OnPostTest()
-        {
-            string pw = Request.Form["PwIn"];
-            Response.Redirect("/Directory");
-            
-            
-            // Console.WriteLine();
-        }
-
-        public PrincipalContext Connection(string domain)
-        {
-            PrincipalContext context = null;
-            try
-            {
-                context = new PrincipalContext(ContextType.Domain, domain, "administrator", "Letmein123!");
-                //userResult = UserPrincipal.FindByIdentity(context, searchQuery);
-                //context.Dispose();
-            }
-            catch (PrincipalException e)
-            {
-                Console.WriteLine(e.Message);
-            }
-            return context;
-        }
-
 
     }
 

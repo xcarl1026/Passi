@@ -14,10 +14,8 @@
                     <h2>Welcome, @Model.Username </h2>
                     <p><h3>Search Directory</h3></p>
                     <div class="form-inline">
-                        <form  id="myForm" method="post">
-                            <input type="text" class="form-control mr-sm-2" name="searchQuery" id="searchQuery" placeholder="Search" value="">
+                             <input type="text" class="form-control mr-sm-2" id="searchQuery" placeholder="Search" value="">
                             <button class="btn btn-default my-2 my-sm-o" id="searchADUser">Search AD</button>
-                        </form>
                         
                     </div>
                 </div>
@@ -28,50 +26,7 @@
                 </div>
             </div>
         </div>
-
-        /*//Starts Hidden
-        <div class="container" id="userInfoGrid">
-            <div>
-                <button class="btn btn-default" id="unlockacc">Unlock Account</button>
-                <button class="btn btn-default" id="resetpw">Reset Pasword</button>
-            </div>
-
-            <div class="row">
-                <div class="col-sm-1">Username:</div>
-                <div class="col-sm">@Model.ADUserDisplayName</div>
-                <div class="col-sm-1">Email:</div>
-                <div class="col-sm">@Model.ADUserEmailAddress</div>
-            </div>
-        </div>*/
-
-
-
-
-        //Reset password modal
-        <div class="modal" id="resetModal">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title">Modal title</h5>
-                        <button type="button" id="xModalBtn" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <form asp-page-handler="Test" method="post">
-                        <div class="modal-body">
-
-                            <input type="text" class="form-control mr-sm-2" name="pwIn" id="resetPWIn" placeholder="Enter Password" value="" />
-                        </div>
-                        <div id="mfooter" class="modal-footer">
-
-                            <button type="submit" id="resetPWSave" class="btn btn-primary">Save changes</button>
-
-                            <button type="button" id="closeModalBtn" class="btn btn-secondary" data-dismiss="modal">Close</button>';
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
+        
 
     }
     else
@@ -81,8 +36,31 @@
     @section scripts{
         <script>
 
+            document.getElementById('searchADUser').addEventListener('click', () => {
+            searchQuery = document.getElementById("searchQuery").value;
+            var page = '/UserInfoGrid/'
+            var url = page + searchQuery;
+            fetch(url)
+                .then((response) => {
+                    return response.text();
+                })
+                .then((result) => {
+                    document.getElementById('grid').innerHTML = result;
+                    document.getElementById('resetpw').addEventListener('click', () => {
+                        var resetModal = document.getElementById('resetModal');
+                        resetModal.style.display = "block";
+                        document.getElementById("xModalBtn").addEventListener('click', () => {
+                            resetModal.style.display = "none";
+                        });
+                        document.getElementById("closeModalBtn").addEventListener('click', () => {
+                            resetModal.style.display = "none";
+                        });
+
+                    });
+                });
+        });
         
-             document.forms[0].onsubmit = () => {
+             /*document.forms[0].onsubmit = () => {
                 let formData = new FormData(document.forms[0]);
                 fetch('/UserInfoGrid?handler=SearchADUser', {
                     method: 'post',
@@ -96,7 +74,7 @@
                     document.getElementById('grid').innerHTML = result;
                 });
                 return false;
-            };
+            };*/
 
             document.getElementById("searchQuery").addEventListener("keyup", () => {
                 if (event.keyCode == 13) {
