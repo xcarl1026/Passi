@@ -14,9 +14,8 @@ namespace Passi.Pages
 {
     public class LoginModel : PageModel
     {
-
-
-        Authentication userConnection;
+        public string Username { get; set; }
+        public string Domain { get; set; }
 
         public void OnGet()
         {
@@ -32,17 +31,33 @@ namespace Passi.Pages
             bool authenticated = false;
             if (authenticated == false)
             {
-              
-                userConnection = new Authentication(domain, username, password);
-                authenticated = userConnection.Authenticated;
-                HttpContext.Session.SetString("Username", userConnection.User);
-                HttpContext.Session.SetString("Domain", userConnection.Domain);
+                
+                PrincipalContext context = Authentication(domain, username, password);
+                authenticated = context.ValidateCredentials(username, password, ContextOptions.SimpleBind);
+                //HttpContext.Session.SetString("Username", context.UserName);
+                //HttpContext.Session.SetString("Domain", domain);
             }           
           
 
             var page = (authenticated == true) ? "/Directory" : "/Login";
             Response.Redirect(page);
         }
-        
+
+        private PrincipalContext Authentication(string domain, string username, string password)
+        {
+            PrincipalContext context = null;
+            try
+            {
+                context = new PrincipalContext(ContextType.Domain, domain);               
+
+            }
+            catch (PrincipalException e)
+            {
+                Console.WriteLine(e.Message);
+            }
+            return context;
+
+        }
+
     }
 }
