@@ -10,7 +10,7 @@ namespace Passi.Pages.Models
 {
     public class DirectorySearch
     {
-        SearchResult searchResult { get; set; }
+       // SearchResult searchResult { get; set; }
         public UserPrincipal userResult { get; set; }
 
         public DirectorySearch(string searchQuery, string domain)

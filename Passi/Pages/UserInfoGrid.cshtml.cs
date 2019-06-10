@@ -8,7 +8,8 @@ using Passi.Pages.Models;
 using Microsoft.AspNetCore.Http;
 using System.IO;
 using Newtonsoft.Json;
-using Microsoft.AspNetCore.Http;
+using System.DirectoryServices.AccountManagement;
+
 
 
 namespace Passi.Pages
@@ -17,11 +18,11 @@ namespace Passi.Pages
     {
         DirectorySearch directorySearch;
         public string searchQuery { get; set; }
-        public string ADUsername { get; set; }
-        public String ADEmailaddress { get; set; }
+        public string ADUserDisplayName { get; set; }
+        public String ADUserEmailAddress { get; set; }
         public void OnGet()
         {
-            searchQuery = RouteData.Values["searchQuery"].ToString();
+            /*searchQuery = RouteData.Values["searchQuery"].ToString();
             Console.WriteLine(searchQuery);
             string domain = HttpContext.Session.GetString("Domain");
             directorySearch = new DirectorySearch(searchQuery, domain);
@@ -43,9 +44,15 @@ namespace Passi.Pages
             directorySearch.userResult.SetPassword(RouteData.Values["pw"].ToString());
         }
 
-        public void OnPostSearchADUser()
+        [HttpPost]
+        public void OnPostSearchADUser(IFormCollection formCollection)
         {
-            Console.Write("yo");
+            string personID = formCollection["searchQuery"];
+            Console.WriteLine(personID);
+            /*PrincipalContext context = Connection(HttpContext.Session.GetString("Domain"));
+            UserPrincipal adUser = UserPrincipal.FindByIdentity(context, 0, user);
+            ADUserDisplayName = adUser.DisplayName;
+            ADUserEmailAddress = adUser.EmailAddress;*/
         }
 
         public void OnPostTest()
@@ -57,7 +64,23 @@ namespace Passi.Pages
             // Console.WriteLine();
         }
 
-       
+        public PrincipalContext Connection(string domain)
+        {
+            PrincipalContext context = null;
+            try
+            {
+                context = new PrincipalContext(ContextType.Domain, domain, "administrator", "Letmein123!");
+                //userResult = UserPrincipal.FindByIdentity(context, searchQuery);
+                //context.Dispose();
+            }
+            catch (PrincipalException e)
+            {
+                Console.WriteLine(e.Message);
+            }
+            return context;
+        }
+
+
     }
 
   
