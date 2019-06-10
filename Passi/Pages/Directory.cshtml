@@ -35,7 +35,7 @@
     }
     @section scripts{
         <script>
-
+            var resetModal;
             document.getElementById('searchADUser').addEventListener('click', () => {
             searchQuery = document.getElementById("searchQuery").value;
             var page = '/UserInfoGrid/'
@@ -47,7 +47,7 @@
                 .then((result) => {
                     document.getElementById('grid').innerHTML = result;
                     document.getElementById('resetpw').addEventListener('click', () => {
-                        var resetModal = document.getElementById('resetModal');
+                        resetModal = document.getElementById('resetModal');
                         resetModal.style.display = "block";
                         document.getElementById("xModalBtn").addEventListener('click', () => {
                             resetModal.style.display = "none";
