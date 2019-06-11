@@ -9,13 +9,22 @@ using System.DirectoryServices.Protocols;
 using Passi.Pages.Models;
 using Microsoft.AspNetCore.Http;
 using System.DirectoryServices.AccountManagement;
+using System.ComponentModel.DataAnnotations;
 
 namespace Passi.Pages
 {
     public class LoginModel : PageModel
     {
-        public string Username { get; set; }
+        [BindProperty]
+        [Required]
         public string Domain { get; set; }
+        [BindProperty]
+        [Required]
+        public string Username { get; set; }
+        [BindProperty]
+        [Required]
+        public string Password { get; set; }
+        Authentication userConnection;
 
         public void OnGet()
         {
@@ -25,37 +34,28 @@ namespace Passi.Pages
             }
         }
 
-        public void OnPost(string domain, string username, string password)
+        public IActionResult OnPost()
         {
-             
-            bool authenticated = false;
-            if (authenticated == false)
+            if (ModelState.IsValid)
             {
-                
-                PrincipalContext context = Authentication(domain, username, password);
-                authenticated = context.ValidateCredentials(username, password, ContextOptions.SimpleBind);
-                //HttpContext.Session.SetString("Username", context.UserName);
-                //HttpContext.Session.SetString("Domain", domain);
-            }           
-          
-
-            var page = (authenticated == true) ? "/Directory" : "/Login";
-            Response.Redirect(page);
-        }
-
-        private PrincipalContext Authentication(string domain, string username, string password)
-        {
-            PrincipalContext context = null;
-            try
-            {
-                context = new PrincipalContext(ContextType.Domain, domain);               
-
+                bool authenticated = false;
+                if (authenticated == false)
+                {
+                    string[] splitDomain = Domain.Split(".");
+                    string dusername = splitDomain[0] + "\\" + Username;
+                    userConnection = new Authentication(Domain, dusername, Password);
+                    authenticated = userConnection.Authenticated;
+                    HttpContext.Session.SetString("Username", userConnection.User);
+                    HttpContext.Session.SetString("Domain", userConnection.Domain);
+                }
+                var page = (authenticated == true) ? "/Directory" : "/Login";
+                // do something
+                return RedirectToPage(page);
             }
-            catch (PrincipalException e)
+            else
             {
-                Console.WriteLine(e.Message);
+                return Page();
             }
-            return context;
 
         }
 

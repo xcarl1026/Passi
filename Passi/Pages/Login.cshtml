@@ -6,32 +6,25 @@
 }
 <h2>@ViewData["Title"]</h2>
 
+<form method="post">
+    <div class="form-group">
+        <label for="Domain">Domain:</label>
+        <input asp-for="Domain" class="form-control" />
+        <span asp-validation-for="Domain"></span>
+    </div>
+    <div class="form-group">
+        <label for="Username">Username:</label>
+        <input asp-for="Username" class="form-control" />
+        <span asp-validation-for="Username"></span>
+    </div>
+    <div class="form-group">
+        <label for="Password">Password:</label>
+        <input type="password" asp-for="Password" class="form-control" />
+        <span asp-validation-for="Password"></span>
+    </div>
+    <div>
+        <button type="submit" class="btn btn-primary">Submit</button>
 
-    <form asp-page="login" method="post">
-        <div class="form-group">
-            <label for="Domain">Domain: </label>
-            <input type="text" class="form-control" name="domain" placeholder="Enter Domain">
-        </div>
-        <div class="form-group">
-            <label for="text">Username: </label>
-            <input type="text" class="form-control" name="username" placeholder="Enter Username">
-        </div>
-        <div class="form-group">
-            <label for="pwd">Password:</label>
-            <input type="password" class="form-control" name="password" placeholder="Enter password">
-        </div>
-        <button type="submit" class="btn btn-default">Submit</button>
-    </form>
-
-<!--<div class="jumbotron">
-    <h1 class="display-3">Hello, world!</h1>
-    <p class="lead">This is a simple hero unit, a simple jumbotron-style component for calling extra attention to featured content or information.</p>
-    <hr class="my-4">
-    <p>It uses utility classes for typography and spacing to space content out within the larger container.</p>
-    <p class="lead">
-        <a class="btn btn-primary btn-lg" href="#" role="button">Learn more</a>
-    </p>
-</div>-->
-
-
+    </div>
+</form>
 
