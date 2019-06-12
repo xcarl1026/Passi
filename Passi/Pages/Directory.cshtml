@@ -7,25 +7,20 @@
 
 @{ if (!string.IsNullOrEmpty(Model.Username))
     {
-
         <div class="container-fluid">
-            <div class="row">
-                <div class="col-md-12">
-                    <h2>Welcome, @Model.Username </h2>
-                    <p><h3>Search Directory</h3></p>
-                    <div class="form-inline">
-                             <input type="text" class="form-control mr-sm-2" id="searchQuery" placeholder="Search" value="">
-                            <button class="btn btn-primary my-2 my-sm-o" id="searchADUser">Search AD</button>
-                    </div>
-                </div>
+            <div class="row 1stRow">
+                <div class="1-1col col-md-4">
+                    
+                 </div>
             </div>
-            <div class="row">
-                <div class="col-md-12">
-                    <div id="grid"></div>
+            <div class="row 2ndRow">
+                <div class="form-inline">
+                    <input type="text" class="form-control mr-sm-2" id="searchQuery" placeholder="Search" value="">
+                    <button class="btn btn-primary my-2 my-sm-o" id="searchADUser">Search AD</button>
                 </div>
+                <div class="1-2 col-md-3"><div id="grid"></div></div>
             </div>
         </div>
-        
 
     }
     else
