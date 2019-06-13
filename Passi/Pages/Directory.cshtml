@@ -7,18 +7,15 @@
 
 @{ if (!string.IsNullOrEmpty(Model.Username))
     {
-        <div class="container-fluid">
-            <div class="row 1stRow">
-                <div class="1-1col col-md-4">
-                    
-                 </div>
-            </div>
-            <div class="row 2ndRow">
-                <div class="form-inline">
-                    <input type="text" class="form-control mr-sm-2" id="searchQuery" placeholder="Search" value="">
-                    <button class="btn btn-primary my-2 my-sm-o" id="searchADUser">Search AD</button>
+        <div class="container">
+            <div class="row">
+                <input type="text" class="form-control mr-sm-2" id="searchQuery" placeholder="Search" value="">
+                <button class="btn btn-primary my-2 my-sm-o" id="searchADUser">Search AD</button>
+                <div class="col-xs-12"></div>
+                <div class="row">
+                    <div class="col-md-5"><div id="grid"></div></div>
+                    <div class="col-md-7"></div>
                 </div>
-                <div class="1-2 col-md-3"><div id="grid"></div></div>
             </div>
         </div>
 
@@ -31,44 +28,44 @@
         <script>
             var resetModal;
             document.getElementById('searchADUser').addEventListener('click', () => {
-            searchQuery = document.getElementById("searchQuery").value;
-            var page = '/UserInfoGrid/'
-            var url = page + searchQuery;
-            fetch(url)
-                .then((response) => {
-                    return response.text();
-                })
-                .then((result) => {
-                    document.getElementById('grid').innerHTML = result;
-                    document.getElementById('resetpw').addEventListener('click', () => {
-                        resetModal = document.getElementById('resetModal');
-                        resetModal.style.display = "block";
-                        document.getElementById("xModalBtn").addEventListener('click', () => {
-                            resetModal.style.display = "none";
-                        });
-                        document.getElementById("closeModalBtn").addEventListener('click', () => {
-                            resetModal.style.display = "none";
-                        });
-
-                    });
-                });
-        });
-        
-             /*document.forms[0].onsubmit = () => {
-                let formData = new FormData(document.forms[0]);
-                fetch('/UserInfoGrid?handler=SearchADUser', {
-                    method: 'post',
-                    body: new URLSearchParams(formData)
-                })
+                searchQuery = document.getElementById("searchQuery").value;
+                var page = '/UserInfoGrid/'
+                var url = page + searchQuery;
+                fetch(url)
                     .then((response) => {
-                        response.text();
-                        alert('Posted using Fetch');
+                        return response.text();
                     })
                     .then((result) => {
-                    document.getElementById('grid').innerHTML = result;
-                });
-                return false;
-            };*/
+                        document.getElementById('grid').innerHTML = result;
+                        document.getElementById('resetpw').addEventListener('click', () => {
+                            resetModal = document.getElementById('resetModal');
+                            resetModal.style.display = "block";
+                            document.getElementById("xModalBtn").addEventListener('click', () => {
+                                resetModal.style.display = "none";
+                            });
+                            document.getElementById("closeModalBtn").addEventListener('click', () => {
+                                resetModal.style.display = "none";
+                            });
+
+                        });
+                    });
+            });
+
+            /*document.forms[0].onsubmit = () => {
+               let formData = new FormData(document.forms[0]);
+               fetch('/UserInfoGrid?handler=SearchADUser', {
+                   method: 'post',
+                   body: new URLSearchParams(formData)
+               })
+                   .then((response) => {
+                       response.text();
+                       alert('Posted using Fetch');
+                   })
+                   .then((result) => {
+                   document.getElementById('grid').innerHTML = result;
+               });
+               return false;
+           };*/
 
             document.getElementById("searchQuery").addEventListener("keyup", () => {
                 if (event.keyCode == 13) {
