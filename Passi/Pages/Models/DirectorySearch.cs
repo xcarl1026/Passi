@@ -12,12 +12,13 @@ namespace Passi.Pages.Models
     {
        // SearchResult searchResult { get; set; }
         public UserPrincipal userResult { get; set; }
+        public PrincipalContext context { get; set; }
 
         public DirectorySearch(string searchQuery, string domain)
         {
             try
             {
-                PrincipalContext context = new PrincipalContext(ContextType.Domain, domain, "administrator", "Letmein123!");
+                context = new PrincipalContext(ContextType.Domain, domain, "administrator", "Letmein123!");
                 userResult = UserPrincipal.FindByIdentity(context, searchQuery);
                 //context.Dispose();
             }

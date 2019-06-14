@@ -7,10 +7,8 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Passi.Pages.Models;
 using Microsoft.AspNetCore.Http;
 using System.IO;
-using Newtonsoft.Json;
 using System.DirectoryServices.AccountManagement;
-
-
+using System.ComponentModel.DataAnnotations;
 
 namespace Passi.Pages
 {
@@ -19,12 +17,27 @@ namespace Passi.Pages
         DirectorySearch directorySearch;
         public string searchQuery { get; set; }
         public string ADUserDisplayName { get; set; }
-        public String ADUserEmailAddress { get; set; }
+        public string ADUserEmailAddress { get; set; }
+
         public void OnGet()
         {
             searchQuery = RouteData.Values["searchQuery"].ToString();
-            Console.WriteLine(searchQuery);
-            string domain = HttpContext.Session.GetString("Domain");
+            if (!string.IsNullOrEmpty(searchQuery))
+            {
+                string domain = HttpContext.Session.GetString("Domain");
+                Console.WriteLine(searchQuery);
+                directorySearch = new DirectorySearch(searchQuery, domain);
+                ADUserDisplayName = directorySearch.userResult.SamAccountName;
+                ADUserEmailAddress = directorySearch.userResult.EmailAddress;
+                directorySearch.context.Dispose();
+                directorySearch.userResult.Dispose();
+            }
+            else
+            {
+                Console.WriteLine("string was empty or null");
+            }
+            
+            /*string domain = HttpContext.Session.GetString("Domain");
             directorySearch = new DirectorySearch(searchQuery, domain);
             ADUserDisplayName = directorySearch.userResult.SamAccountName;
             ADUserEmailAddress = directorySearch.userResult.EmailAddress;
@@ -33,7 +46,7 @@ namespace Passi.Pages
 
        
         [HttpPost]
-        public void OnPostSearchADUser(IFormCollection formCollection)
+        public void OnPostResetPassword(IFormCollection formCollection)
         {
             string personID = formCollection["searchQuery"];
             Console.WriteLine(personID);
