@@ -7,17 +7,20 @@
 
 @{ if (!string.IsNullOrEmpty(Model.Username))
     {
-        <div class="container">
-            <div class="row">
-                <input type="text" class="form-control mr-sm-2" id="searchQuery" placeholder="Search" value="">
+
+    <div class="container">
+        <div style="padding-bottom:20px" class="row">
+            <div class="col-lg-12">
+                <label>Search Directory</label>
+                <input type="text" class="form-control" id="searchQuery" placeholder="Search" value="">
                 <button class="btn btn-primary my-2 my-sm-o" id="searchADUser">Search AD</button>
-                <div class="col-xs-12"></div>
-                <div class="row">
-                    <div class="col-md-5"><div id="grid"></div></div>
-                    <div class="col-md-7"></div>
-                </div>
             </div>
         </div>
+        <div class="row">
+            <div class="col-lg-12" id="grid"></div>
+        </div>
+    </div>
+
 
     }
     else
@@ -26,7 +29,31 @@
     }
     @section scripts{
         <script>
+
             var resetModal;
+            $('#searchADUser').on('click', searchADUser);
+             
+
+            function searchADUser() {
+                var url = 'UserInfoGrid/' + $('#searchQuery').val();
+                fetch(url)
+                    .then((response) => {
+                        return response.text();
+                    })
+                    .then((result) => {
+                        $('#grid').html(result);
+                        $('#resetpw').on('click', resetPassword);
+                    })
+            }
+
+            function resetPassword() {
+                $('#resetModal').css('display', 'block');
+                $('#xModalBtn').on('click', function close() { $('#resetModal').css('display', 'none'); });
+                $('#closeModalBtn').on('click', function close() { $('#resetModal').css('display', 'none'); });
+            }
+
+
+            /* var resetModal;
             document.getElementById('searchADUser').addEventListener('click', () => {
                 searchQuery = document.getElementById("searchQuery").value;
                 var page = '/UserInfoGrid/'
@@ -49,7 +76,7 @@
 
                         });
                     });
-            });
+            });*/
 
             /*document.forms[0].onsubmit = () => {
                let formData = new FormData(document.forms[0]);
