@@ -31,17 +31,6 @@ namespace Passi.Pages
             Username = HttpContext.Session.GetString("Username");
         }
 
-        public IActionResult OnPost()
-        {
-            if (ModelState.IsValid)
-            {
-                Console.WriteLine("box tiene algo");
-                return Page();
-            }
-            else
-            {
-                return Page();
-            }
-        }
+        
     }
 }

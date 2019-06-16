@@ -38,6 +38,7 @@
                                 <input type="text" asp-for="ResetPassword" class="form-control" />
                                 <span asp-validation-for="ResetPassword"></span>
                             </div>
+                            <div id="modalPWResetStatus"></div>
                         </div>
                         <div id="mfooter" class="modal-footer">
                             <button type="submit" id="resetPWSave" class="btn btn-primary">Save changes</button>
@@ -58,10 +59,12 @@
         @await Html.PartialAsync("_ValidationScriptsPartial")
         <script>
 
+            var searchQuery;
             $('#searchADUser').on('click', searchADUser);
 
 
             function searchADUser() {
+                searchQuery = $('#searchQuery').val();
                 var url = 'UserInfoGrid/' + $('#searchQuery').val();
                 fetch(url)
                     .then((response) => {
@@ -79,6 +82,26 @@
                 $('#closeModalBtn').on('click', function close() { $('#resetModal').css('display', 'none'); });
             }
 
+            $('#pwResetForm').submit(function (event) {
+                let formData = new FormData(document.forms[0]);
+                formData.append('searchQuery', searchQuery);
+               fetch('/UserInfoGrid?handler=ResetPassword', {
+                   method: 'post',
+                   body: new URLSearchParams(formData)
+               })
+                   .then((response) => {
+                       return response.text();
+                       //alert('Posted using Fetch');
+                   })
+                   .then((result) => {
+                       //var html = result.html();
+                       $('#modalPWResetStatus').html(result);
+                   })
+                event.preventDefault();
+            });
+
+          
+              
 
             /* var resetModal;
             document.getElementById('searchADUser').addEventListener('click', () => {
@@ -107,7 +130,7 @@
 
             /*document.forms[0].onsubmit = () => {
                let formData = new FormData(document.forms[0]);
-               fetch('/UserInfoGrid?handler=SearchADUser', {
+               fetch('/UserInfoGrid?handler=ResetPassword', {
                    method: 'post',
                    body: new URLSearchParams(formData)
                })
@@ -116,7 +139,7 @@
                        alert('Posted using Fetch');
                    })
                    .then((result) => {
-                   document.getElementById('grid').innerHTML = result;
+                   //document.getElementById('grid').innerHTML = result;
                });
                return false;
            };*/

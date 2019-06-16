@@ -18,9 +18,12 @@ namespace Passi.Pages
         public string searchQuery { get; set; }
         public string ADUserDisplayName { get; set; }
         public string ADUserEmailAddress { get; set; }
+       // public string StatusMessage { get; set; }
 
         public void OnGet()
         {
+            ADUserDisplayName = "";
+            ADUserEmailAddress = "";
             searchQuery = RouteData.Values["searchQuery"].ToString();
             if (!string.IsNullOrEmpty(searchQuery))
             {
@@ -46,10 +49,36 @@ namespace Passi.Pages
 
        
         [HttpPost]
-        public void OnPostResetPassword(IFormCollection formCollection)
+        public ContentResult OnPostResetPassword(IFormCollection formCollection)
         {
-            string personID = formCollection["searchQuery"];
-            Console.WriteLine(personID);
+            string domain = HttpContext.Session.GetString("Domain");
+            string pw = formCollection["ResetPassword"];
+            string searchQuery = formCollection["searchQuery"];
+            string StatusMessage = "";
+            Console.WriteLine(pw + " AND " + searchQuery);
+            if (!string.IsNullOrEmpty(searchQuery) && !string.IsNullOrEmpty(pw))
+            {
+                directorySearch = new DirectorySearch(searchQuery, domain);
+                try
+                {
+                    directorySearch.userResult.SetPassword(pw);
+                    StatusMessage = "Password was successfully changed.";
+                }
+                catch (PasswordException exception)
+                {
+                    StatusMessage = exception.Message;
+                    Console.WriteLine(StatusMessage);
+                }
+            }
+            else
+            {
+                StatusMessage = "No value was received to change password.";
+            }
+            return Content(StatusMessage);
+           
+            
+            
+            
             /*PrincipalContext context = Connection(HttpContext.Session.GetString("Domain"));
             UserPrincipal adUser = UserPrincipal.FindByIdentity(context, 0, user);
             ADUserDisplayName = adUser.DisplayName;
