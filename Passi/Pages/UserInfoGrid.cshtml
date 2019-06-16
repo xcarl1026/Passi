@@ -5,28 +5,47 @@
 }
 
 
-<button class="btn btn-outline-primary" id="unlockacc">Unlock Account</button>
-<button class="btn btn-outline-primary" id="resetpw">Reset Pasword</button>
-<p></p>
-<table class="table table-dark">
-    <tbody>
-        <tr>
-            <th></th>
-            <td>Display Name</td>
-            <td>@Model.ADUserDisplayName</td>
-        </tr>
-        <tr>
-            <th></th>
-            <td>Email Address</td>
-            <td>@Model.ADUserEmailAddress</td>
-        </tr>
-        <tr>
-            <th></th>
-            <td>test</td>
-            <td>test</td>
-        </tr>
-    </tbody>
-</table>
+
+    <div class="row">
+        <div class="col-lg-6" id="col">
+            <button class="btn btn-outline-primary" id="unlockacc">Unlock Account</button>
+            <button class="btn btn-outline-primary" id="resetpw">Reset Pasword</button>
+            <p></p>
+            <table class="table table-dark">
+                <tbody>
+                    <tr>
+                        <th></th>
+                        <td>Display Name</td>
+                        <td>@Model.ADUserDisplayName</td>
+                    </tr>
+                    <tr>
+                        <th></th>
+                        <td>Email Address</td>
+                        <td>@Model.ADUserEmailAddress</td>
+                    </tr>
+                    <tr>
+                        <th></th>
+                        <td>test</td>
+                        <td>test</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div style="padding-top:68px" class="col-lg-6" id="grid2">
+            <div class="list-group">
+                @{ 
+                    
+                    foreach(var item in @Model.SecurityGroups)
+                    {
+                        <a href="#" class="list-group-item list-group-item-action active">
+                        @item
+                        </a>
+                    }
+                }
+            </div>
+        </div>
+    </div>
+
 
 
 

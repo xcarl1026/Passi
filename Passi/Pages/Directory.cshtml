@@ -16,9 +16,10 @@
                     <button class="btn btn-primary my-2 my-sm-o" id="searchADUser">Search AD</button>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-lg-12" id="grid"></div>
+            <div id="UserInfo">
+
             </div>
+            
         </div>
 
 
@@ -50,6 +51,25 @@
         </div>
 
 
+        <div class="modal" id="UnlockModal">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" id="xUnlockModalBtn" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body" id="modalUnlockStatus">
+                        Unlock command sent.
+                    </div>
+                    <div id="mfooter" class="modal-footer">
+                        <button type="button" id="closeUnlockModalBtn" class="btn btn-primary" data-dismiss="modal">Ok</button>';
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
     }
     else
     {
@@ -61,7 +81,7 @@
 
             var searchQuery;
             $('#searchADUser').on('click', searchADUser);
-
+           
 
             function searchADUser() {
                 searchQuery = $('#searchQuery').val();
@@ -71,37 +91,53 @@
                         return response.text();
                     })
                     .then((result) => {
-                        $('#grid').html(result);
-                        $('#resetpw').on('click', resetPassword);
+                        $('#UserInfo').html(result);
+                        $('#resetpw').on('click', ResetPassword);
+                        $('#unlockacc').on('click', UnlockAcc)
                     })
             }
 
-            function resetPassword() {
+            function ResetPassword() {
                 $('#resetModal').css('display', 'block');
-                $('#xModalBtn').on('click', function close() { $('#resetModal').css('display', 'none'); });
-                $('#closeModalBtn').on('click', function close() { $('#resetModal').css('display', 'none'); });
+                $('#xModalBtn').on('click', function close() { $('#UnlockModal').css('display', 'none'); });
+                $('#closeModalBtn').on('click', function close() { $('#UnlockModal').css('display', 'none'); });
+            }
+
+            function UnlockAcc() {
+                var url = '/UserInfoGrid?handler=UnlockAccount' + searchQuery;
+                fetch(url, {
+                    method: 'post'
+                })
+                    .then(() => {
+                        $('#UnlockModal').css('display', 'block');
+                        $('#xUnlockModalBtn').on('click', function close() { $('#UnlockModal').css('display', 'none'); });
+                        $('#closeUnlockModalBtn').on('click', function close() { $('#UnlockModal').css('display', 'none'); });
+                    })
+                    
             }
 
             $('#pwResetForm').submit(function (event) {
                 let formData = new FormData(document.forms[0]);
                 formData.append('searchQuery', searchQuery);
-               fetch('/UserInfoGrid?handler=ResetPassword', {
-                   method: 'post',
-                   body: new URLSearchParams(formData)
-               })
-                   .then((response) => {
-                       return response.text();
-                       //alert('Posted using Fetch');
-                   })
-                   .then((result) => {
-                       //var html = result.html();
-                       $('#modalPWResetStatus').html(result);
-                   })
+                fetch('/UserInfoGrid?handler=ResetPassword', {
+                    method: 'post',
+                    body: new URLSearchParams(formData)
+                })
+                    .then((response) => {
+                        return response.text();
+                        //alert('Posted using Fetch');
+                    })
+                    .then((result) => {
+                        //var html = result.html();
+                        $('#modalPWResetStatus').html(result);
+                    })
                 event.preventDefault();
             });
 
-          
-              
+
+
+
+
 
             /* var resetModal;
             document.getElementById('searchADUser').addEventListener('click', () => {

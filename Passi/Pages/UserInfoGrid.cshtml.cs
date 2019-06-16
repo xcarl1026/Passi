@@ -18,12 +18,16 @@ namespace Passi.Pages
         public string searchQuery { get; set; }
         public string ADUserDisplayName { get; set; }
         public string ADUserEmailAddress { get; set; }
+        public List<string> SecurityGroups {get;set;}
+
+
        // public string StatusMessage { get; set; }
 
         public void OnGet()
         {
             ADUserDisplayName = "";
             ADUserEmailAddress = "";
+            SecurityGroups = new List<string>();
             searchQuery = RouteData.Values["searchQuery"].ToString();
             if (!string.IsNullOrEmpty(searchQuery))
             {
@@ -32,8 +36,14 @@ namespace Passi.Pages
                 directorySearch = new DirectorySearch(searchQuery, domain);
                 ADUserDisplayName = directorySearch.userResult.SamAccountName;
                 ADUserEmailAddress = directorySearch.userResult.EmailAddress;
-                directorySearch.context.Dispose();
+                foreach(string g in directorySearch.SecurityGroups)
+                {
+                    SecurityGroups.Add(g);
+                    Console.WriteLine(g);
+                }
                 directorySearch.userResult.Dispose();
+                directorySearch.context.Dispose();
+       
             }
             else
             {
@@ -63,6 +73,8 @@ namespace Passi.Pages
                 {
                     directorySearch.userResult.SetPassword(pw);
                     StatusMessage = "Password was successfully changed.";
+                    directorySearch.context.Dispose();
+                    directorySearch.userResult.Dispose();
                 }
                 catch (PasswordException exception)
                 {
@@ -70,19 +82,22 @@ namespace Passi.Pages
                     Console.WriteLine(StatusMessage);
                 }
             }
-            else
-            {
-                StatusMessage = "No value was received to change password.";
-            }
             return Content(StatusMessage);
-           
-            
             
             
             /*PrincipalContext context = Connection(HttpContext.Session.GetString("Domain"));
             UserPrincipal adUser = UserPrincipal.FindByIdentity(context, 0, user);
             ADUserDisplayName = adUser.DisplayName;
             ADUserEmailAddress = adUser.EmailAddress;*/
+        }
+
+        public void OnPostUnlockAccount()
+        {
+            string domain = HttpContext.Session.GetString("Domain");
+            directorySearch = new DirectorySearch(searchQuery, domain);
+            directorySearch.userResult.UnlockAccount();
+            directorySearch.context.Dispose();
+            directorySearch.userResult.Dispose();
         }
 
     }
