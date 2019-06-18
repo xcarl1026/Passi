@@ -17,7 +17,10 @@ namespace Passi.Pages
         DirectorySearch directorySearch;
         public string searchQuery { get; set; }
         public string ADUserDisplayName { get; set; }
+        public string ADUsername { get; set; }
         public string ADUserEmailAddress { get; set; }
+        public DateTime? ADUserLastBadPasswordAttempt { get; set; }
+        public DateTime? ADUserLastLogon { get; set; }
         public List<string> SecurityGroups {get;set;}
 
 
@@ -25,22 +28,33 @@ namespace Passi.Pages
 
         public void OnGet()
         {
+            searchQuery = null;
             ADUserDisplayName = "";
             ADUserEmailAddress = "";
             SecurityGroups = new List<string>();
-            searchQuery = RouteData.Values["searchQuery"].ToString();
+            if (RouteData.Values["searchQuery"] != null)
+            {
+                searchQuery = RouteData.Values["searchQuery"].ToString();
+            }
             if (!string.IsNullOrEmpty(searchQuery))
             {
                 string domain = HttpContext.Session.GetString("Domain");
                 Console.WriteLine(searchQuery);
                 directorySearch = new DirectorySearch(searchQuery, domain);
-                ADUserDisplayName = directorySearch.userResult.SamAccountName;
-                ADUserEmailAddress = directorySearch.userResult.EmailAddress;
-                foreach(string g in directorySearch.SecurityGroups)
+                if(directorySearch.userResult != null)
                 {
-                    SecurityGroups.Add(g);
-                    Console.WriteLine(g);
+                    ADUserDisplayName = directorySearch.userResult.DisplayName;
+                    ADUserEmailAddress = directorySearch.userResult.EmailAddress;
+                    ADUserLastBadPasswordAttempt = directorySearch.userResult.LastBadPasswordAttempt;
+                    ADUserLastLogon = directorySearch.userResult.LastLogon;
+                    ADUsername = directorySearch.userResult.SamAccountName;
+                    foreach (string g in directorySearch.SecurityGroups)
+                    {
+                        SecurityGroups.Add(g);
+                        Console.WriteLine(g);
+                    }
                 }
+                
                 directorySearch.userResult.Dispose();
                 directorySearch.context.Dispose();
        
