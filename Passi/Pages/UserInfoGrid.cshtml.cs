@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Http;
 using System.IO;
 using System.DirectoryServices.AccountManagement;
 using System.ComponentModel.DataAnnotations;
+using System.DirectoryServices;
 
 namespace Passi.Pages
 {
@@ -22,16 +23,17 @@ namespace Passi.Pages
         public DateTime? ADUserLastBadPasswordAttempt { get; set; }
         public DateTime? ADUserLastLogon { get; set; }
         public List<string> SecurityGroups {get;set;}
+        public List<string> ADProxyAddresses { get; set; }
 
 
        // public string StatusMessage { get; set; }
 
         public void OnGet()
         {
-            searchQuery = null;
             ADUserDisplayName = "";
             ADUserEmailAddress = "";
             SecurityGroups = new List<string>();
+            ADProxyAddresses = new List<string>();
             if (RouteData.Values["searchQuery"] != null)
             {
                 searchQuery = RouteData.Values["searchQuery"].ToString();
@@ -48,6 +50,12 @@ namespace Passi.Pages
                     ADUserLastBadPasswordAttempt = directorySearch.userResult.LastBadPasswordAttempt;
                     ADUserLastLogon = directorySearch.userResult.LastLogon;
                     ADUsername = directorySearch.userResult.SamAccountName;
+                    PropertyCollection properties = ((DirectoryEntry)directorySearch.userResult.GetUnderlyingObject()).Properties;
+                    foreach(object property in properties["proxyaddresses"])
+                    {
+                        string p = property.ToString();
+                        ADProxyAddresses.Add(p);
+                    }
                     foreach (string g in directorySearch.SecurityGroups)
                     {
                         SecurityGroups.Add(g);

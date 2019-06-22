@@ -28,6 +28,20 @@
                     </tr>
                 </tbody>
             </table>
+            <h5>Proxy Addresses</h5>
+            <table class="table table-sm table-dark">
+                <tbody>
+                    @{
+
+                        foreach (var item in @Model.ADProxyAddresses)
+                        {
+                            <tr>
+                                <td>@item</td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
             <h5>Password Stats</h5>
             <table class="table table-sm table-dark">
                 <tbody>
@@ -48,12 +62,12 @@
         </div>
         <div style="padding-top:93px" class="col-lg-6" id="grid2">
             <div class="list-group">
-                @{ 
-                    
-                    foreach(var item in @Model.SecurityGroups)
+                @{
+
+                    foreach (var item in @Model.SecurityGroups)
                     {
                         <a href="#" class="list-group-item list-group-item-action active">
-                        @item
+                            @item
                         </a>
                     }
                 }
