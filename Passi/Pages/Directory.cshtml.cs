@@ -28,26 +28,52 @@ namespace Passi.Pages
             Username = HttpContext.Session.GetString("Username");
             string domain = HttpContext.Session.GetString("Domain");
             ADActiveUserList = GetADUserList(domain);
+            foreach(var u in ADActiveUserList)
+            {
+                Console.WriteLine(u);
+            }
+            
 
         }
 
         public List<string> GetADUserList(string domain)
         {
             ADActiveUserList = new List<string>();
-            using (var context = new PrincipalContext(ContextType.Domain, domain, "administrator", "Letmein123!"))
+            /*using (var context = new PrincipalContext(ContextType.Domain, domain, "administrator", "Letmein123!"))
             {
-                using (var searcher = new PrincipalSearcher(new UserPrincipal(context) { Enabled = true }))
+                UserPrincipal userPrin = new UserPrincipal(context);
+                userPrin.Enabled = true;
+                using (var searcher = new PrincipalSearcher(userPrin))
                 {
-                    foreach (var user in searcher.FindAll())
+                    searcher.QueryFilter = userPrin;
+                    foreach (var result in searcher.FindAll())
                     {
-                        PropertyCollection properties = ((DirectoryEntry)user.GetUnderlyingObject()).Properties;
-                        string username = properties["samAccountName"].ToString();
-                        ADActiveUserList.Add(username);
+                        DirectoryEntry de = result.GetUnderlyingObject() as DirectoryEntry;
+                        ADActiveUserList.Add(de.Properties["samAccountName"].Value.ToString());
+                            
                     }
                 }
+                userPrin.Dispose();
+            }*/
+
+            PrincipalContext context = new PrincipalContext(ContextType.Domain, domain, "administrator", "Letmein123!");
+            UserPrincipal userPrin = new UserPrincipal(context);
+            PrincipalSearcher searcher = new PrincipalSearcher(userPrin);
+            foreach (var result in searcher.FindAll())
+            {
+               DirectoryEntry de = result.GetUnderlyingObject() as DirectoryEntry;
+               UserPrincipal u = UserPrincipal.FindByIdentity(context, IdentityType.SamAccountName, de.Properties["samAccountName"].Value.ToString());
+               if(u.Enabled == true)
+                {
+                    ADActiveUserList.Add(u.SamAccountName);
+                }
+
             }
+            searcher.Dispose();
+            userPrin.Dispose();
+            context.Dispose();
             return ADActiveUserList;
         }
-        
     }
+
 }
