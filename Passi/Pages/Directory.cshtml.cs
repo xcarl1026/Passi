@@ -15,7 +15,6 @@ namespace Passi.Pages
     public class DirectoryModel : PageModel
     {
         public string Username { get; set; }
-
        // DirectorySearch directorySearch;
         public string searchQuery { get; set; }
         [BindProperty]
@@ -31,31 +30,12 @@ namespace Passi.Pages
             foreach(var u in ADActiveUserList)
             {
                 Console.WriteLine(u);
-            }
-            
-
+            }        
         }
 
         public List<string> GetADUserList(string domain)
         {
             ADActiveUserList = new List<string>();
-            /*using (var context = new PrincipalContext(ContextType.Domain, domain, "administrator", "Letmein123!"))
-            {
-                UserPrincipal userPrin = new UserPrincipal(context);
-                userPrin.Enabled = true;
-                using (var searcher = new PrincipalSearcher(userPrin))
-                {
-                    searcher.QueryFilter = userPrin;
-                    foreach (var result in searcher.FindAll())
-                    {
-                        DirectoryEntry de = result.GetUnderlyingObject() as DirectoryEntry;
-                        ADActiveUserList.Add(de.Properties["samAccountName"].Value.ToString());
-                            
-                    }
-                }
-                userPrin.Dispose();
-            }*/
-
             PrincipalContext context = new PrincipalContext(ContextType.Domain, domain, "administrator", "Letmein123!");
             UserPrincipal userPrin = new UserPrincipal(context);
             PrincipalSearcher searcher = new PrincipalSearcher(userPrin);
@@ -72,8 +52,10 @@ namespace Passi.Pages
             searcher.Dispose();
             userPrin.Dispose();
             context.Dispose();
+            ADActiveUserList.Sort();
             return ADActiveUserList;
         }
+
     }
 
 }
