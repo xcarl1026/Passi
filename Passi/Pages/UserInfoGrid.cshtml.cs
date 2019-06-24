@@ -15,12 +15,14 @@ namespace Passi.Pages
 {
     public class UserInfoGridModel : PageModel
     {
+        public string Username { get; set; }
         DirectorySearch directorySearch;
         public string searchQuery { get; set; }
         public string ADUserDisplayName { get; set; }
         public string ADUsername { get; set; }
         public string ADUserEmailAddress { get; set; }
         public DateTime? ADUserLastBadPasswordAttempt { get; set; }
+        public bool ADUserAccountLocked { get; set; }
         public DateTime? ADUserLastLogon { get; set; }
         public List<string> SecurityGroups {get;set;}
         public List<string> ADProxyAddresses { get; set; }
@@ -30,6 +32,7 @@ namespace Passi.Pages
 
         public void OnGet()
         {
+            Username = HttpContext.Session.GetString("Username");
             ADUserDisplayName = "";
             ADUserEmailAddress = "";
             SecurityGroups = new List<string>();
@@ -50,6 +53,7 @@ namespace Passi.Pages
                     ADUserLastBadPasswordAttempt = directorySearch.userResult.LastBadPasswordAttempt;
                     ADUserLastLogon = directorySearch.userResult.LastLogon;
                     ADUsername = directorySearch.userResult.SamAccountName;
+                    ADUserAccountLocked = directorySearch.userResult.IsAccountLockedOut();
                     PropertyCollection properties = ((DirectoryEntry)directorySearch.userResult.GetUnderlyingObject()).Properties;
                     foreach(object property in properties["proxyaddresses"])
                     {

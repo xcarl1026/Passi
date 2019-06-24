@@ -5,75 +5,87 @@
 }
 
 
+@{ if (!string.IsNullOrEmpty(Model.Username))
+    {
+         <div class="row">
+            <div class="col-lg-6" id="col">
+                <button class="btn btn-outline-primary" id="unlockacc">Unlock Account</button>
+                <button style="min-width:135.98pt" class="btn btn-outline-primary" id="resetpw">Reset Pasword</button>
+                <p></p>
+                <h5>Basic Info</h5>
+                <table class="table table-sm table-dark">
+                    <tbody>
+                        <tr>
+                            <td>Username</td>
+                            <td>@Model.ADUsername</td>
+                        </tr>
+                        <tr>
+                            <td>Display Name</td>
+                            <td>@Model.ADUserDisplayName</td>
+                        </tr>
+                        <tr>
+                            <td>Email Address</td>
+                            <td>@Model.ADUserEmailAddress</td>
+                        </tr>
+                        <tr>
+                            <td>Account Locked</td>
+                            <td>@Model.ADUserAccountLocked</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <h5>Proxy Addresses</h5>
+                <table class="table table-sm table-dark">
+                    <tbody>
+                        @{
 
-    <div class="row">
-        <div class="col-lg-6" id="col">
-            <button class="btn btn-outline-primary" id="unlockacc">Unlock Account</button>
-            <button style="min-width:135.98pt" class="btn btn-outline-primary" id="resetpw">Reset Pasword</button>
-            <p></p>
-            <h5>Basic Info</h5>
-            <table class="table table-sm table-dark">
-                <tbody>
-                    <tr>
-                        <td>Username</td>
-                        <td>@Model.ADUsername</td>
-                    </tr>
-                    <tr>
-                        <td>Display Name</td>
-                        <td>@Model.ADUserDisplayName</td>
-                    </tr>
-                    <tr>
-                        <td>Email Address</td>
-                        <td>@Model.ADUserEmailAddress</td>
-                    </tr>
-                </tbody>
-            </table>
-            <h5>Proxy Addresses</h5>
-            <table class="table table-sm table-dark">
-                <tbody>
+                            foreach (var item in @Model.ADProxyAddresses)
+                            {
+                                <tr>
+                                    <td>@item</td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+                <h5>Password Stats</h5>
+                <table class="table table-sm table-dark">
+                    <tbody>
+                        <tr>
+                            <td>Last Workstation Logon</td>
+                            <td>@Model.ADUserLastLogon</td>
+                        </tr>
+                        <tr>
+                            <td>Last Bad Password Attempt</td>
+                            <td>@Model.ADUserLastBadPasswordAttempt</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div style="padding-top:93px" class="col-lg-6" id="grid2">
+                <div class="list-group">
                     @{
 
-                        foreach (var item in @Model.ADProxyAddresses)
+                        foreach (var item in @Model.SecurityGroups)
                         {
-                            <tr>
-                                <td>@item</td>
-                            </tr>
+                            <a href="#" class="list-group-item list-group-item-action active">
+                                @item
+                            </a>
                         }
                     }
-                </tbody>
-            </table>
-            <h5>Password Stats</h5>
-            <table class="table table-sm table-dark">
-                <tbody>
-                    <tr>
-                        <td>Last Workstation Logon</td>
-                        <td>@Model.ADUserLastLogon</td>
-                    </tr>
-                    <tr>
-                        <td>Last Workstation Logon</td>
-                        <td>@Model.ADUserLastLogon</td>
-                    </tr>
-                    <tr>
-                        <td>Last Bad Password Attempt</td>
-                        <td>@Model.ADUserLastBadPasswordAttempt</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-        <div style="padding-top:93px" class="col-lg-6" id="grid2">
-            <div class="list-group">
-                @{
-
-                    foreach (var item in @Model.SecurityGroups)
-                    {
-                        <a href="#" class="list-group-item list-group-item-action active">
-                            @item
-                        </a>
-                    }
-                }
+                </div>
             </div>
         </div>
-    </div>
+    }
+    else
+    {
+        <div class="jumbotron"><h1>Your session expired. Please refresh the page and logon.</h1></div>
+    
+    }
+}
+       
+
+
+
 
 
 
