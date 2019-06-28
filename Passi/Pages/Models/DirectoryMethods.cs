@@ -124,7 +124,7 @@ namespace Passi.Pages.Models
             }
             return user;
         }
-
+        //Reset user account password, returns message depending on success?failure
         public string ResetPassword(string searchQuery, string password)
         {
             string passwordStatusMessage = String.Empty;
@@ -152,6 +152,35 @@ namespace Passi.Pages.Models
                 Console.WriteLine(e.Message);
             }
             return passwordStatusMessage;
+        }
+        //Unlocks account returns message depending on success?failure
+        public string UnlockAccount(string searchQuery)
+        {
+            string accountUnlockStatus = string.Empty;
+            try
+            {
+                PrincipalContext context = new PrincipalContext(ContextType.Domain, AppAuth["Domain"], AppAuth["Username"], AppAuth["Password"]);
+                UserPrincipal userResult = UserPrincipal.FindByIdentity(context, searchQuery);
+                try
+                {
+                    if (userResult != null)
+                    {
+                        userResult.UnlockAccount();
+                        accountUnlockStatus = "Account was unlocked.";
+                    }
+                    userResult.Dispose();
+                    context.Dispose();
+                }
+                catch (PrincipalOperationException pEx)
+                {
+                    accountUnlockStatus = pEx.Message;
+                }
+            }
+            catch (PrincipalException e)
+            {
+                Console.WriteLine(e.Message);
+            }
+            return accountUnlockStatus;
         }
     }
 }

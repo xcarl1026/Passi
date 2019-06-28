@@ -5,10 +5,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Include="Pages\Models\Authentication.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
     <None Include="wwwroot\js\test.js" />
   </ItemGroup>
 

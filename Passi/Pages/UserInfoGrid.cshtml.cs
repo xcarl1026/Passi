@@ -16,7 +16,6 @@ namespace Passi.Pages
     public class UserInfoGridModel : PageModel
     {
         public string Username { get; set; }
-        DirectorySearch directorySearch;
         public string searchQuery { get; set; }
         public string ADUserDisplayName { get; set; }
         public string ADUsername { get; set; }
@@ -73,40 +72,20 @@ namespace Passi.Pages
            
         }
 
-        /*[HttpPost]
-        public ContentResult OnPostResetPassword(IFormCollection formCollection)
-        {
-            string domain = HttpContext.Session.GetString("Domain");
-            string pw = formCollection["ResetPassword"];
-            string searchQuery = formCollection["searchQuery"];
-            string StatusMessage = "";
-            Console.WriteLine(pw + " AND " + searchQuery);
-            if (!string.IsNullOrEmpty(searchQuery) && !string.IsNullOrEmpty(pw))
-            {
-                directorySearch = new DirectorySearch(searchQuery, domain);
-                try
-                {
-                    directorySearch.userResult.SetPassword(pw);
-                    StatusMessage = "Password was successfully changed.";
-                    directorySearch.context.Dispose();
-                    directorySearch.userResult.Dispose();
-                }
-                catch (PasswordException exception)
-                {
-                    StatusMessage = exception.Message;
-                    Console.WriteLine(StatusMessage);
-                }
-            }
-            return Content(StatusMessage);
-
-        }*/
         public void OnPostUnlockAccount()
         {
             string domain = HttpContext.Session.GetString("Domain");
-            directorySearch = new DirectorySearch(searchQuery, domain);
-            directorySearch.userResult.UnlockAccount();
-            directorySearch.context.Dispose();
-            directorySearch.userResult.Dispose();
+            string accountUnlockStatus = string.Empty;
+            if (RouteData.Values["searchQuery"] != null)
+            {
+                searchQuery = RouteData.Values["searchQuery"].ToString();
+                accountUnlockStatus = new DirectoryMethods().UnlockAccount(searchQuery);
+            }
+            else
+            {
+                Console.WriteLine("No searchQuery val");
+            }
+            
         }
 
     }

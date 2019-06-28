@@ -24,7 +24,7 @@ namespace Passi.Pages
         [BindProperty]
         [Required]
         public string Password { get; set; }
-        Authentication userConnection;
+ 
 
         public void OnGet()
         {
