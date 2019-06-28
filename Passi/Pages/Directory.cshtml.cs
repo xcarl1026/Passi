@@ -15,7 +15,7 @@ namespace Passi.Pages
     public class DirectoryModel : PageModel
     {
         public string Username { get; set; }
-       // DirectorySearch directorySearch;
+        public string Domain { get; set; }
         public string searchQuery { get; set; }
         [BindProperty]
         [Required]
@@ -25,12 +25,13 @@ namespace Passi.Pages
         public void OnGet()
         {
             Username = HttpContext.Session.GetString("Username");
-            string domain = HttpContext.Session.GetString("Domain");
-            ADActiveUserList = GetADUserList(domain);
-            foreach(var u in ADActiveUserList)
+            Domain = HttpContext.Session.GetString("Domain");
+            ADActiveUserList = GetADUserList(Domain);
+
+            /*foreach (var u in ADActiveUserList)
             {
                 Console.WriteLine(u);
-            }        
+            }  */      
         }
 
         public List<string> GetADUserList(string domain)

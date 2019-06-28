@@ -32,9 +32,11 @@ namespace Passi.Pages
             {
                 HttpContext.Session.Clear();
             }
+
+            //DirectoryQueries q = new DirectoryQueries();
         }
 
-        public IActionResult OnPost()
+        /*public IActionResult OnPost()
         {
             if (ModelState.IsValid)
             {
@@ -49,7 +51,30 @@ namespace Passi.Pages
                     HttpContext.Session.SetString("Domain", userConnection.Domain);
                 }
                 var page = (authenticated == true) ? "/Directory" : "/Login";
-                // do something
+                return RedirectToPage(page);
+            }
+            else
+            {
+                return Page();
+            }
+
+        }*/
+
+        public IActionResult OnPost()
+        {
+            if (ModelState.IsValid)
+            {
+                bool authenticated = false;
+                if (authenticated == false)
+                {
+                    string[] splitDomain = Domain.Split(".");
+                    string dusername = splitDomain[0] + "\\" + Username;
+                    //userConnection = new Authentication(Domain, dusername, Password);
+                    authenticated = new DirectoryQueries().Authenticate(Domain, dusername, Password);
+                    HttpContext.Session.SetString("Username", dusername);
+                    HttpContext.Session.SetString("Domain", Domain);
+                }
+                var page = (authenticated == true) ? "/Directory" : "/Login";
                 return RedirectToPage(page);
             }
             else
@@ -58,6 +83,5 @@ namespace Passi.Pages
             }
 
         }
-
     }
 }
