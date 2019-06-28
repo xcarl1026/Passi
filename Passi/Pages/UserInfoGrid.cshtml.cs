@@ -25,7 +25,7 @@ namespace Passi.Pages
         public bool ADUserAccountLocked { get; set; }
         public DateTime? ADUserLastLogon { get; set; }
         public List<string> SecurityGroups {get;set;}
-        public List<string> ADProxyAddresses { get; set; }
+        public List<string> ProxyAddresses { get; set; }
 
 
        // public string StatusMessage { get; set; }
@@ -36,7 +36,7 @@ namespace Passi.Pages
             ADUserDisplayName = "";
             ADUserEmailAddress = "";
             SecurityGroups = new List<string>();
-            ADProxyAddresses = new List<string>();
+            ProxyAddresses = new List<string>();
             if (RouteData.Values["searchQuery"] != null)
             {
                 searchQuery = RouteData.Values["searchQuery"].ToString();
@@ -45,46 +45,28 @@ namespace Passi.Pages
             {
                 string domain = HttpContext.Session.GetString("Domain");
                 Console.WriteLine(searchQuery);
-                directorySearch = new DirectorySearch(searchQuery, domain);
-                if(directorySearch.userResult != null)
-                {
-                    ADUserDisplayName = directorySearch.userResult.DisplayName;
-                    ADUserEmailAddress = directorySearch.userResult.EmailAddress;
-                    ADUserLastBadPasswordAttempt = directorySearch.userResult.LastBadPasswordAttempt;
-                    ADUserLastLogon = directorySearch.userResult.LastLogon;
-                    ADUsername = directorySearch.userResult.SamAccountName;
-                    ADUserAccountLocked = directorySearch.userResult.IsAccountLockedOut();
-                    PropertyCollection properties = ((DirectoryEntry)directorySearch.userResult.GetUnderlyingObject()).Properties;
-                    foreach(object property in properties["proxyaddresses"])
-                    {
-                        string p = property.ToString();
-                        ADProxyAddresses.Add(p);
-                    }
-                    foreach (string g in directorySearch.SecurityGroups)
-                    {
-                        SecurityGroups.Add(g);
-                        Console.WriteLine(g);
-                    }
-                }
-                
-                directorySearch.userResult.Dispose();
-                directorySearch.context.Dispose();
-       
+                ADUser user = new DirectoryMethods().DirectorySearch(searchQuery, domain);
+                //Set properties 
+                ADUserDisplayName = user.DisplayName;
+                ADUserEmailAddress = user.EmailAddress;
+                ADUserLastBadPasswordAttempt = user.LastBadPasswordAttempt;
+                ADUserLastLogon = user.LastLogon;
+                ADUsername = user.UserName;
+                ADUserAccountLocked = user.AccountLocked;
+                SecurityGroups = user.SecurityGroups;
+                ProxyAddresses = user.ProxyAddresses;
+                    
             }
             else
             {
                 Console.WriteLine("string was empty or null");
             }
             
-            /*string domain = HttpContext.Session.GetString("Domain");
-            directorySearch = new DirectorySearch(searchQuery, domain);
-            ADUserDisplayName = directorySearch.userResult.SamAccountName;
-            ADUserEmailAddress = directorySearch.userResult.EmailAddress;
-            //directorySearch.userResult.Dispose();*/
+         
         }
 
-       
-        [HttpPost]
+
+    [HttpPost]
         public ContentResult OnPostResetPassword(IFormCollection formCollection)
         {
             string domain = HttpContext.Session.GetString("Domain");

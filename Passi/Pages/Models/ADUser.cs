@@ -8,19 +8,19 @@ namespace Passi.Pages.Models
     public class ADUser
     {
         public string UserName { get; set; }
-
-        public string UserDisplayName { get; set; }
-
-        public List<string> UserSecGroups { get; set; }
-
-        public bool Found { get; set; }
+        public string DisplayName { get; set; }
+        public string EmailAddress { get; set; }
+        public List<string> SecurityGroups { get; set; }
+        public List<string> ProxyAddresses { get; set; }
+        public DateTime? LastBadPasswordAttempt { get; set; }
+        public DateTime? LastLogon { get; set; }
+        public bool AccountLocked { get; set; }
 
         public ADUser()
         {
-            UserName = String.Empty;
-            UserDisplayName = String.Empty;
-            UserSecGroups = new List<string>();
-            Found = false;
+            SecurityGroups = new List<string>();
+            ProxyAddresses = new List<string>();
+  
         }
        
     }
