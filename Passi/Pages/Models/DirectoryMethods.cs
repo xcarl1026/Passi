@@ -124,5 +124,34 @@ namespace Passi.Pages.Models
             }
             return user;
         }
+
+        public string ResetPassword(string searchQuery, string password)
+        {
+            string passwordStatusMessage = String.Empty;
+            try
+            {
+                PrincipalContext context = new PrincipalContext(ContextType.Domain, AppAuth["Domain"], AppAuth["Username"], AppAuth["Password"]);
+                UserPrincipal userResult = UserPrincipal.FindByIdentity(context, searchQuery);
+                try
+                {
+                    if (userResult != null)
+                    {
+                        userResult.SetPassword(password);
+                        passwordStatusMessage = "Password was successfully changed.";
+                    }
+                    userResult.Dispose();
+                    context.Dispose();
+                }
+                catch (PasswordException pEx)
+                {
+                    passwordStatusMessage = pEx.Message;
+                }
+            }
+            catch (PrincipalException e)
+            {
+                Console.WriteLine(e.Message);
+            }
+            return passwordStatusMessage;
+        }
     }
 }

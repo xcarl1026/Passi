@@ -33,16 +33,11 @@ namespace Passi.Pages
         public void OnGet()
         {
             Username = HttpContext.Session.GetString("Username");
-            ADUserDisplayName = "";
-            ADUserEmailAddress = "";
             SecurityGroups = new List<string>();
             ProxyAddresses = new List<string>();
             if (RouteData.Values["searchQuery"] != null)
             {
                 searchQuery = RouteData.Values["searchQuery"].ToString();
-            }
-            if (!string.IsNullOrEmpty(searchQuery))
-            {
                 string domain = HttpContext.Session.GetString("Domain");
                 Console.WriteLine(searchQuery);
                 ADUser user = new DirectoryMethods().DirectorySearch(searchQuery, domain);
@@ -54,19 +49,31 @@ namespace Passi.Pages
                 ADUsername = user.UserName;
                 ADUserAccountLocked = user.AccountLocked;
                 SecurityGroups = user.SecurityGroups;
-                ProxyAddresses = user.ProxyAddresses;
-                    
+                ProxyAddresses = user.ProxyAddresses;        
             }
             else
             {
                 Console.WriteLine("string was empty or null");
             }
-            
-         
         }
 
+        [HttpPost]
+        public ContentResult OnPostResetPassword(IFormCollection formCollection)
+        {
+            string domain = HttpContext.Session.GetString("Domain");
+            string pw = formCollection["ResetPassword"];
+            string searchQuery = formCollection["searchQuery"];
+            string StatusMessage = "";
+            Console.WriteLine(pw + " AND " + searchQuery);
+            if (!string.IsNullOrEmpty(searchQuery) && !string.IsNullOrEmpty(pw))
+            {
+                StatusMessage = new DirectoryMethods().ResetPassword(searchQuery, pw);
+            }
+            return Content(StatusMessage);
+           
+        }
 
-    [HttpPost]
+        /*[HttpPost]
         public ContentResult OnPostResetPassword(IFormCollection formCollection)
         {
             string domain = HttpContext.Session.GetString("Domain");
@@ -91,14 +98,8 @@ namespace Passi.Pages
                 }
             }
             return Content(StatusMessage);
-            
-            
-            /*PrincipalContext context = Connection(HttpContext.Session.GetString("Domain"));
-            UserPrincipal adUser = UserPrincipal.FindByIdentity(context, 0, user);
-            ADUserDisplayName = adUser.DisplayName;
-            ADUserEmailAddress = adUser.EmailAddress;*/
-        }
 
+        }*/
         public void OnPostUnlockAccount()
         {
             string domain = HttpContext.Session.GetString("Domain");

@@ -49,7 +49,7 @@ function FilterList() {
 function ResetPassword() {
     $('#resetModal').css('display', 'block');
     $('#xModalBtn').on('click', function close() { $('#resetModal').css('display', 'none'); });
-    $('#closeModalBtn').on('click', function close() { $('#resetModal').css('display', 'none'); });
+    $('#closeModalBtn').on('click', function close() { $('#modalPWResetStatus').html(""); $('#resetModal').css('display', 'none'); });
 }
 
 function UnlockAcc() {
