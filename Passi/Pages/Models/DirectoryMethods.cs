@@ -18,7 +18,7 @@ namespace Passi.Pages.Models
         private PrincipalContext context { get; set; }
         private List<string> SecurityGroups { get; set; }
         private Dictionary<string, string> AppAuth { get; set; }
-
+        //Initializes dictionary with creds
         public DirectoryMethods()
         {
             /*Explore file provider
@@ -108,13 +108,20 @@ namespace Passi.Pages.Models
                         string p = property.ToString();
                         user.ProxyAddresses.Add(p);
                     }
+                    DirectoryEntry deUser = userResult.GetUnderlyingObject() as DirectoryEntry;
+                    DirectoryEntry deUserContainer = deUser.Parent;
+                    user.OU = deUserContainer.Properties["distinguishedName"].Value.ToString();
+                   // Console.WriteLine(properties["distinguishedName"].Value.ToString());
+                    user.DisplayName = userResult.DisplayName;
+                    user.UserName = userResult.SamAccountName;
+                    user.EmailAddress = userResult.EmailAddress;
+                    user.LastBadPasswordAttempt = userResult.LastBadPasswordAttempt;
+                    user.LastLogon = userResult.LastLogon;
+                    user.AccountLocked = userResult.IsAccountLockedOut();
+                    user.AccountLockoutTime = userResult.AccountLockoutTime;
+                    user.UserCannotChangePassword = userResult.UserCannotChangePassword;
                 }
-                user.DisplayName = userResult.DisplayName;
-                user.UserName = userResult.SamAccountName;
-                user.EmailAddress = userResult.EmailAddress;
-                user.LastBadPasswordAttempt = userResult.LastBadPasswordAttempt;
-                user.LastLogon = userResult.LastLogon;
-                user.AccountLocked = userResult.IsAccountLockedOut();
+               
                 userResult.Dispose();
                 context.Dispose();
             }

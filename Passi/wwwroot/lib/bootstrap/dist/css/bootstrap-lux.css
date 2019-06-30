@@ -1669,16 +1669,16 @@ pre code {
 }
 
 .table {
-  width: 100%;
-  margin-bottom: 1rem;
-  color: #919aa1;
+    width: 100%;
+    margin-bottom: 1rem;
+    color: #919aa1;
 }
 
 .table th,
 .table td {
-  padding: 0.75rem;
-  vertical-align: top;
-  border-top: 1px solid rgba(0, 0, 0, 0.05);
+    padding: 0.75rem;
+    vertical-align: top;
+    border-top: 1px solid rgba(0, 0, 0, 0.05);
 }
 
 .table thead th {
@@ -1692,7 +1692,7 @@ pre code {
 
 .table-sm th,
 .table-sm td {
-  padding: 0.3rem;
+    padding: 0.3rem;
 }
 
 .table-bordered {
@@ -10649,7 +10649,7 @@ th {
 
 .table-sm th,
 .table-sm td {
-  padding: 0.75rem;
+    padding: 0.75rem;
 }
 
 .dropdown-menu {

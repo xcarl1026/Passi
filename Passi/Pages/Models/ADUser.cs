@@ -15,6 +15,9 @@ namespace Passi.Pages.Models
         public DateTime? LastBadPasswordAttempt { get; set; }
         public DateTime? LastLogon { get; set; }
         public bool AccountLocked { get; set; }
+        public DateTime? AccountLockoutTime { get; set; }
+        public string OU { get; set; }
+        public bool UserCannotChangePassword { get; set; }
 
         public ADUser()
         {

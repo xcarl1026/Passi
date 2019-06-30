@@ -13,23 +13,27 @@
                 <button style="min-width:135.98pt" class="btn btn-outline-primary" id="resetpw">Reset Pasword</button>
                 <p></p>
                 <h5>Basic Info</h5>
-                <table class="table table-sm table-dark">
+                <table style="table-layout:fixed" class="table table-sm table-dark">
                     <tbody>
                         <tr>
                             <td>Username</td>
-                            <td>@Model.ADUsername</td>
+                            <td>@Model.ADUser.UserName</td>
                         </tr>
                         <tr>
                             <td>Display Name</td>
-                            <td>@Model.ADUserDisplayName</td>
+                            <td>@Model.ADUser.DisplayName</td>
                         </tr>
                         <tr>
                             <td>Email Address</td>
-                            <td>@Model.ADUserEmailAddress</td>
+                            <td>@Model.ADUser.EmailAddress</td>
                         </tr>
                         <tr>
                             <td>Account Locked</td>
-                            <td>@Model.ADUserAccountLocked</td>
+                            <td>@Model.ADUser.AccountLocked</td>
+                        </tr>
+                        <tr>
+                            <td>Container</td>
+                            <td style="word-wrap:break-word;">@Model.ADUser.OU</td>
                         </tr>
                     </tbody>
                 </table>
@@ -38,7 +42,7 @@
                     <tbody>
                         @{
 
-                            foreach (var item in @Model.ProxyAddresses)
+                            foreach (var item in @Model.ADUser.ProxyAddresses)
                             {
                                 <tr>
                                     <td>@item</td>
@@ -52,11 +56,15 @@
                     <tbody>
                         <tr>
                             <td>Last Workstation Logon</td>
-                            <td>@Model.ADUserLastLogon</td>
+                            <td>@Model.ADUser.LastLogon</td>
                         </tr>
                         <tr>
                             <td>Last Bad Password Attempt</td>
-                            <td>@Model.ADUserLastBadPasswordAttempt</td>
+                            <td>@Model.ADUser.LastBadPasswordAttempt</td>
+                        </tr>
+                        <tr>
+                            <td>User Cannot Change Password</td>
+                            <td>@Model.ADUser.UserCannotChangePassword</td>
                         </tr>
                     </tbody>
                 </table>
@@ -65,7 +73,7 @@
                 <div class="list-group">
                     @{
 
-                        foreach (var item in @Model.SecurityGroups)
+                        foreach (var item in @Model.ADUser.SecurityGroups)
                         {
                             <a href="#" class="list-group-item list-group-item-action active">
                                 @item

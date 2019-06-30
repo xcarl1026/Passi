@@ -17,38 +17,21 @@ namespace Passi.Pages
     {
         public string Username { get; set; }
         public string searchQuery { get; set; }
-        public string ADUserDisplayName { get; set; }
-        public string ADUsername { get; set; }
-        public string ADUserEmailAddress { get; set; }
-        public DateTime? ADUserLastBadPasswordAttempt { get; set; }
-        public bool ADUserAccountLocked { get; set; }
-        public DateTime? ADUserLastLogon { get; set; }
-        public List<string> SecurityGroups {get;set;}
-        public List<string> ProxyAddresses { get; set; }
-
+        public ADUser ADUser { get; set; }
 
        // public string StatusMessage { get; set; }
 
         public void OnGet()
         {
             Username = HttpContext.Session.GetString("Username");
-            SecurityGroups = new List<string>();
-            ProxyAddresses = new List<string>();
             if (RouteData.Values["searchQuery"] != null)
             {
                 searchQuery = RouteData.Values["searchQuery"].ToString();
                 string domain = HttpContext.Session.GetString("Domain");
                 Console.WriteLine(searchQuery);
                 ADUser user = new DirectoryMethods().DirectorySearch(searchQuery, domain);
-                //Set properties 
-                ADUserDisplayName = user.DisplayName;
-                ADUserEmailAddress = user.EmailAddress;
-                ADUserLastBadPasswordAttempt = user.LastBadPasswordAttempt;
-                ADUserLastLogon = user.LastLogon;
-                ADUsername = user.UserName;
-                ADUserAccountLocked = user.AccountLocked;
-                SecurityGroups = user.SecurityGroups;
-                ProxyAddresses = user.ProxyAddresses;        
+                ADUser = user;
+             
             }
             else
             {
