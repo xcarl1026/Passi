@@ -75,9 +75,9 @@
 
                         foreach (var item in @Model.ADUser.SecurityGroups)
                         {
-                            <a href="#" class="list-group-item list-group-item-action active">
+                           <button type="button" id="@item" onClick="GetGroupMembers(this.id)" class="list-group-item list-group-item-action active">
                                 @item
-                            </a>
+                            </button>
                         }
                     }
                 </div>

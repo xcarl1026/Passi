@@ -189,5 +189,28 @@ namespace Passi.Pages.Models
             }
             return accountUnlockStatus;
         }
+        //Retireves a list of members of a group
+        public List<string> GetGroupMembers(string domain, string groupVal)
+        {
+            List<string> gMembers = new List<string>();
+            try
+            {
+                PrincipalContext context = new PrincipalContext(ContextType.Domain, domain, AppAuth["Username"], AppAuth["Password"]);
+                GroupPrincipal group = GroupPrincipal.FindByIdentity(context, groupVal);
+                foreach(Principal p in group.GetMembers())
+                {
+                    if(p.SamAccountName != null)
+                    {
+                        gMembers.Add(p.SamAccountName);
+                    }
+                    
+                }
+            }
+            catch(PrincipalException e)
+            {
+                Console.WriteLine(e.Message);
+            }
+            return gMembers;
+        }
     }
 }

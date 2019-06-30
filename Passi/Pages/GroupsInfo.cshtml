@@ -1,0 +1,32 @@
+﻿@page "{searchQuery?}"
+@model GroupsInfoModel
+@{
+    Layout = null;
+}
+
+
+@{ if (!string.IsNullOrEmpty(Model.Username))
+    {
+        <div class="row">
+            <div class="col-lg-12" id="col">
+                <div class="List-GroupMembers">
+                    @{
+                        foreach (var item in @Model.GroupeMembers)
+                        {
+                            <button type="button" class="list-group-item list-group-item-action">
+                                @item
+                            </button>
+                        }
+                    }
+                </div>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="jumbotron"><h1>Your session expired. Please refresh the page and logon.</h1></div>
+
+    }
+}
+
+
