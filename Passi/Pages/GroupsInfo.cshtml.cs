@@ -13,9 +13,10 @@ namespace Passi.Pages
     {
         public string Username { get; set; }
         public string searchQuery { get; set; }
-        public List<string> GroupeMembers { get; set; }
+        //public List<string> GroupeMembers { get; set; }
+        public List<ADGroup> GroupList { get; set; }
 
-        public void OnGet()
+        /*public void OnGet()
         {
             Username = HttpContext.Session.GetString("Username");
             if (RouteData.Values["searchQuery"] != null)
@@ -29,6 +30,31 @@ namespace Passi.Pages
             {
                 Console.WriteLine("string was empty or null");
             }
+        }*/
+
+        public void OnGet()
+        {
+            Username = HttpContext.Session.GetString("Username");
+            DirectoryMethods dMethods = new DirectoryMethods();
+            if (RouteData.Values["searchQuery"] != null)
+            {
+                searchQuery = RouteData.Values["searchQuery"].ToString();
+                string domain = HttpContext.Session.GetString("Domain");
+                //Console.WriteLine(searchQuery);
+                GroupList = dMethods.GetGroupList(searchQuery);
+                foreach(ADGroup m in GroupList)
+                {
+                    ADGroup adGroup = new ADGroup();
+                    adGroup = m;
+                    Console.WriteLine(adGroup.GroupName);
+                }
+               
+            }
+            else
+            {
+                Console.WriteLine("string was empty or null");
+            }
         }
+
     }
 }
