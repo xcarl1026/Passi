@@ -273,21 +273,21 @@ namespace Passi.Pages.Models
             return adGroup;
         }
 
-        public ADGroup CheckForGroupInGroup(ADGroup adGroup)
-        {
-            ADGroup foundGroup = null;
-            foreach (ADGroupObject obj in adGroup.GroupObjects)
-            {
-                if(obj.ObjectType == 268435456 || obj.ObjectType == 26843545)
-                {
-                    foundGroup = GetADGroupDetails(obj.SamAccountName);
-                }
-            }
-            
-            return foundGroup;
-        }
+        /* public ADGroup CheckForGroupInGroup(ADGroup adGroup)
+         {
+             ADGroup foundGroup = null;
+             foreach (ADGroupObject obj in adGroup.GroupObjects)
+             {
+                 if(obj.ObjectType == 268435456 || obj.ObjectType == 26843545)
+                 {
+                     foundGroup = GetADGroupDetails(obj.SamAccountName);
+                 }
+             }
 
-        public List<ADGroup> GetGroupList(string groupVal)
+             return foundGroup;
+         }*/
+
+        /*public List<ADGroup> GetGroupList(string groupVal)
         {
             List<ADGroup> adGroupList = new List<ADGroup>();
             ADGroup adGroup = GetADGroupDetails(groupVal);
@@ -304,7 +304,44 @@ namespace Passi.Pages.Models
 
             }
             return adGroupList;
+        }*/
+
+        public List<string> CheckForGroupInGroup(ADGroup adGroup)
+        {
+            List<string> foundGroups = new List<string>();
+            foreach (ADGroupObject obj in adGroup.GroupObjects)
+            {
+                if (obj.ObjectType == 268435456 || obj.ObjectType == 26843545)
+                {
+                    foundGroups.Add(obj.SamAccountName);
+                }
+            }
+
+            return foundGroups;
         }
 
+        public List<ADGroup> GetGroupList(string groupVal)
+        {
+            int ct = -1;
+            List<ADGroup> adGroupList = new List<ADGroup>();
+            ADGroup adGroup = GetADGroupDetails(groupVal);
+            ADGroup foundGroup = new ADGroup();
+            adGroupList.Add(adGroup);
+            List<string> foundGroups = CheckForGroupInGroup(adGroup);
+            while(ct <= -1)
+            {
+                foreach (string s in foundGroups)
+                {
+                    adGroup = GetADGroupDetails(s);
+                    adGroupList.Add(adGroup);
+                    List<string> foundGroups2 = new List<string>();
+                    foundGroups2 = CheckForGroupInGroup(adGroup);
+
+                }
+            }
+            
+            
+            return adGroupList;
+        }
     }
 }
