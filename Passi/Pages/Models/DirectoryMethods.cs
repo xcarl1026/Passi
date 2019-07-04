@@ -311,7 +311,7 @@ namespace Passi.Pages.Models
             List<string> foundGroups = new List<string>();
             foreach (ADGroupObject obj in adGroup.GroupObjects)
             {
-                if (obj.ObjectType == 268435456 || obj.ObjectType == 26843545)
+                if (obj.ObjectType == 268435456 || obj.ObjectType == 268435457)
                 {
                     foundGroups.Add(obj.SamAccountName);
                 }
@@ -322,25 +322,18 @@ namespace Passi.Pages.Models
 
         public List<ADGroup> GetGroupList(string groupVal)
         {
-            int ct = -1;
             List<ADGroup> adGroupList = new List<ADGroup>();
             ADGroup adGroup = GetADGroupDetails(groupVal);
             ADGroup foundGroup = new ADGroup();
             adGroupList.Add(adGroup);
             List<string> foundGroups = CheckForGroupInGroup(adGroup);
-            while(ct <= -1)
+            foreach (string s in foundGroups)
             {
-                foreach (string s in foundGroups)
-                {
-                    adGroup = GetADGroupDetails(s);
-                    adGroupList.Add(adGroup);
-                    List<string> foundGroups2 = new List<string>();
-                    foundGroups2 = CheckForGroupInGroup(adGroup);
+                adGroup = GetADGroupDetails(s);
+                adGroupList.Add(adGroup);
 
-                }
+
             }
-            
-            
             return adGroupList;
         }
     }
