@@ -13,8 +13,9 @@ namespace Passi.Pages
     {
         public string Username { get; set; }
         public string searchQuery { get; set; }
-        //public List<string> GroupeMembers { get; set; }
+        public List<string> GroupMembers { get; set; }
         public List<ADGroup> GroupList { get; set; }
+        public List<List<string>> GroupListStr { get; set; }
 
         /*public void OnGet()
         {
@@ -32,23 +33,45 @@ namespace Passi.Pages
             }
         }*/
 
+        /* public void OnGet()
+         {
+             Username = HttpContext.Session.GetString("Username");
+             DirectoryMethods dMethods = new DirectoryMethods();
+             GroupListStr = new List<List<string>>();
+             if (RouteData.Values["searchQuery"] != null)
+             {
+                 searchQuery = RouteData.Values["searchQuery"].ToString();
+                 string domain = HttpContext.Session.GetString("Domain");
+                 //Console.WriteLine(searchQuery);
+                 GroupList = dMethods.GetGroupList(searchQuery);
+                 foreach(ADGroup m in GroupList)
+                 {
+                     ADGroup adGroup = new ADGroup();
+                     adGroup = m;
+                     GroupListStr.Add(adGroup.GroupObjectsNames);
+                     Console.WriteLine(adGroup.GroupName);
+                 }
+
+             }
+             else
+             {
+                 Console.WriteLine("string was empty or null");
+             }
+         }*/
+
         public void OnGet()
         {
             Username = HttpContext.Session.GetString("Username");
             DirectoryMethods dMethods = new DirectoryMethods();
+            GroupListStr = new List<List<string>>();
             if (RouteData.Values["searchQuery"] != null)
             {
                 searchQuery = RouteData.Values["searchQuery"].ToString();
                 string domain = HttpContext.Session.GetString("Domain");
                 //Console.WriteLine(searchQuery);
-                GroupList = dMethods.GetGroupList(searchQuery);
-                foreach(ADGroup m in GroupList)
-                {
-                    ADGroup adGroup = new ADGroup();
-                    adGroup = m;
-                    Console.WriteLine(adGroup.GroupName);
-                }
-               
+                GroupMembers = dMethods.GetADGroupDetails(searchQuery).GroupObjectsNames;
+             
+
             }
             else
             {
