@@ -75,6 +75,7 @@
 
                         foreach (var item in @Model.ADUser.SecurityGroups)
                         {
+<<<<<<< HEAD
                             <form asp-page="GroupDirectory" method="get">
                                 <input type="hidden" name="id" value="@item" />
                                 <button type="submit" value="@item" class="list-group-item list-group-item-action active">@item</button>
@@ -82,6 +83,11 @@
                           /* <button type="button" id="@item" onClick="GetGroupMembers(this.id)" class="list-group-item list-group-item-action active">
                                 @item
                             </button>*/
+=======
+                            <a href="#" class="list-group-item list-group-item-action active">
+                                @item
+                            </a>
+>>>>>>> parent of a24d1a4... faf
                         }
                     }
                 </div>

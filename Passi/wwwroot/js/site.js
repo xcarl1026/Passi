@@ -64,17 +64,6 @@ function FilterList() {
 }
 
 
-function GetGroupMembers(btnID) {
-    searchQuery = btnID;
-    var url = 'GroupsInfo/' + searchQuery;
-    fetch(url)
-        .then((response) => {
-            return response.text();
-        })
-        .then((result) => {
-            $('#UserInfo').html(result);
-        })
-}
 
 
 function ResetPassword() {
