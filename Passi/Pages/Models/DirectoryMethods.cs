@@ -189,57 +189,41 @@ namespace Passi.Pages.Models
             }
             return accountUnlockStatus;
         }
-        //Retireves a list of members of a group
-       /*public List<string> GetGroupMembers(string domain, string groupVal)
+        //Retrieve all groups
+        public List<string> GetADGroupsList()
         {
-            List<string> gMembers = new List<string>();
-            try
-            {
-                PrincipalContext context = new PrincipalContext(ContextType.Domain, domain, AppAuth["Username"], AppAuth["Password"]);
-                GroupPrincipal group = GroupPrincipal.FindByIdentity(context, groupVal);
-                foreach(Principal p in group.GetMembers())
-                {
-                    if(p.SamAccountName != null)
-                    {
-                        gMembers.Add(p.SamAccountName);
-                    }
-                }
-            }
-            catch(PrincipalException e)
-            {
-                Console.WriteLine(e.Message);
-            }
-            return gMembers;
-        }*/
+            List<string> adGroups = new List<string>();
+           try
+           {
+                PrincipalContext context = new PrincipalContext(ContextType.Domain, AppAuth["Domain"], AppAuth["Username"], AppAuth["Password"]);
+                //object to search - groups
+                GroupPrincipal groups = new GroupPrincipal(context);
+                //searcher to search groups
+                PrincipalSearcher searcher = new PrincipalSearcher(groups);
 
-       /* public List<ADGroupObject> GetGroupMembers(string domain, string groupVal)
-        {
-            List<ADGroupObject> gMembers = new List<ADGroupObject>();
-            try
-            {
-                PrincipalContext context = new PrincipalContext(ContextType.Domain, domain, AppAuth["Username"], AppAuth["Password"]);
-                GroupPrincipal group = GroupPrincipal.FindByIdentity(context, groupVal);
-                DirectoryEntry deGroupObject = group.GetUnderlyingObject() as DirectoryEntry;
-                foreach (Principal p in group.GetMembers())
+                foreach (var found in searcher.FindAll())
                 {
-                    if (p.SamAccountName != null)
+                    DirectoryEntry deFound = (DirectoryEntry)found.GetUnderlyingObject() as DirectoryEntry;
+                    if((int)deFound.Properties["samAccountType"].Value == 536870912)
                     {
-                        ADGroupObject adGroupObject = new ADGroupObject();
-                        adGroupObject.SamAccountName = p.SamAccountName;
-                        adGroupObject.ObjectType = (int)deGroupObject.Properties["sAMAccountType"].Value;
-                        gMembers.Add(adGroupObject);
+                        Console.WriteLine("Groups is Alias Object (BuiltIn) and will not be aded to list.");
                     }
+                    else
+                    {
+                        adGroups.Add(found.ToString());
+                    }
+                   
                 }
-                group.Dispose();
-                context.Dispose();
-            }
-            catch (PrincipalException e)
-            {
-                Console.WriteLine(e.Message);
-            }
-            return gMembers;
-        }*/
+                adGroups.Sort();
 
+           }catch(PrincipalException e)
+           {
+                Console.WriteLine(e.Message);
+           }
+         
+            return adGroups;
+        }
+        
         public ADGroup GetADGroupDetails(string groupVal)
         {
             ADGroup adGroup = new ADGroup();
@@ -260,6 +244,14 @@ namespace Passi.Pages.Models
                         ADGroupObject adGroupObject = new ADGroupObject();
                         adGroupObject.SamAccountName = p.SamAccountName;
                         adGroupObject.ObjectType = (int)deP.Properties["sAMAccountType"].Value;
+                        if(adGroupObject.ObjectType == 268435456 || adGroupObject.ObjectType == 268435457)
+                        {
+                            adGroupObject.ObjectTypeString = "group";
+                        }
+                        else
+                        {
+                            adGroupObject.ObjectTypeString = "user";
+                        }
                         adGroup.GroupObjects.Add(adGroupObject);
                     }
                 }
@@ -273,68 +265,7 @@ namespace Passi.Pages.Models
             return adGroup;
         }
 
-        /* public ADGroup CheckForGroupInGroup(ADGroup adGroup)
-         {
-             ADGroup foundGroup = null;
-             foreach (ADGroupObject obj in adGroup.GroupObjects)
-             {
-                 if(obj.ObjectType == 268435456 || obj.ObjectType == 26843545)
-                 {
-                     foundGroup = GetADGroupDetails(obj.SamAccountName);
-                 }
-             }
-
-             return foundGroup;
-         }*/
-
-        /*public List<ADGroup> GetGroupList(string groupVal)
-        {
-            List<ADGroup> adGroupList = new List<ADGroup>();
-            ADGroup adGroup = GetADGroupDetails(groupVal);
-            ADGroup foundGroup = new ADGroup();
-            adGroupList.Add(adGroup);
-            while(foundGroup != null)
-            {
-                foundGroup = CheckForGroupInGroup(adGroup);
-                if(foundGroup != null)
-                {
-                    adGroupList.Add(foundGroup);
-                    adGroup = GetADGroupDetails(foundGroup.GroupName);
-                }
-
-            }
-            return adGroupList;
-        }*/
-
-        public List<string> CheckForGroupInGroup(ADGroup adGroup)
-        {
-            List<string> foundGroups = new List<string>();
-            foreach (ADGroupObject obj in adGroup.GroupObjects)
-            {
-                if (obj.ObjectType == 268435456 || obj.ObjectType == 268435457)
-                {
-                    foundGroups.Add(obj.SamAccountName);
-                }
-            }
-
-            return foundGroups;
-        }
-
-        public List<ADGroup> GetGroupList(string groupVal)
-        {
-            List<ADGroup> adGroupList = new List<ADGroup>();
-            ADGroup adGroup = GetADGroupDetails(groupVal);
-            ADGroup foundGroup = new ADGroup();
-            adGroupList.Add(adGroup);
-            List<string> foundGroups = CheckForGroupInGroup(adGroup);
-            foreach (string s in foundGroups)
-            {
-                adGroup = GetADGroupDetails(s);
-                adGroupList.Add(adGroup);
 
 
-            }
-            return adGroupList;
-        }
     }
 }

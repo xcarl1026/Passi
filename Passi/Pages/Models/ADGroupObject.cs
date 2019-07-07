@@ -9,6 +9,7 @@ namespace Passi.Pages.Models
     {
         public string SamAccountName { get; set; }
         public int ObjectType { get; set; }
+        public string ObjectTypeString { get; set; }
 
     }
     

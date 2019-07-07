@@ -9,7 +9,7 @@ using Passi.Pages.Models;
 
 namespace Passi.Pages
 {
-    public class GroupsInfoModel : PageModel
+    public class GroupDirectoryModel : PageModel
     {
         public string Username { get; set; }
         public List<string> ADGroupsList { get; set; }
@@ -19,30 +19,28 @@ namespace Passi.Pages
         public string SearchQuery { get; set; }
         public List<string> ADActiveUserList { get; set; }
 
-        public void OnGet()
+        public void OnGet(string id)
         {
             DirectoryMethods dirMethods = new DirectoryMethods();
             Username = HttpContext.Session.GetString("Username");
-            if (RouteData.Values["searchQuery"] != null)
+            ADGroupsList = dirMethods.GetADGroupsList();
+            if (!string.IsNullOrEmpty(id))
             {
-                SearchQuery = RouteData.Values["searchQuery"].ToString();
+                SearchQuery = id;
+                Console.WriteLine(SearchQuery);
                 GroupDetails = dirMethods.GetADGroupDetails(SearchQuery);
                 GroupMembers = GroupDetails.GroupObjectsNames;
                 MemberTypes = new List<string>();
                 foreach (ADGroupObject m in GroupDetails.GroupObjects)
                 {
-
+                    
                     MemberTypes.Add(m.ObjectTypeString);
-
+                    
                 }
                 string Domain = HttpContext.Session.GetString("Domain");
                 ADActiveUserList = new DirectoryMethods().GetADUserList(Domain);
             }
-            else
-            {
-                Console.WriteLine("string was empty or null");
-            }
-        }
 
+        }
     }
 }
