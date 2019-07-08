@@ -35,10 +35,30 @@ function SearchADUser2(btnID) {
         })
 }
 
+function SearchADGroup(btnID) {
+    searchQuery = btnID;
+    var url = 'GroupsInfo/' + searchQuery;
+    fetch(url)
+        .then((response) => {
+            return response.text();
+        })
+        .then((result) => {
+            $('#GroupsInfo').html(result);
+        })
+}
+
 $("#searchInput").on("keyup", FilterList);
 function FilterList() {
     var value = $(this).val().toLowerCase();
     $("#UserList :button").filter(function () {
+        $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+    });
+}
+
+$("#searchInput2").on("keyup", FilterList);
+function FilterList() {
+    var value = $(this).val().toLowerCase();
+    $("#GroupList :button").filter(function () {
         $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
     });
 }

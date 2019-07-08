@@ -1,0 +1,77 @@
+﻿@page
+@model GroupDirectoryModel
+@{
+    ViewData["Title"] = "Group Directory";
+    Layout = "_Layout2";
+}
+
+@{
+    if (!string.IsNullOrEmpty(@Model.Username))
+    {
+        <div class="sidenav">
+            <input style="background-color:#2d2d2c;font-size:1.0rem;text-align:left;color:#F8FBFF" type="text" class="form-control" id="searchInput2" placeholder="Search" value="">
+            <div id="GroupList">
+                @{
+                    foreach (var item in Model.ADGroupsList)
+                    {
+                        <button type="button" id="@item" onclick="SearchADGroup(this.id)" style="width:200px" class="btn btn-primary">@item</button>
+                    }
+                }
+            </div>
+        </div>
+        <div id="GroupsInfo">
+            @{ if (@Model.SearchQuery != null)
+                {
+                    <div class="row">
+                        <div class="col-lg-6" id="col">
+                            <div class="List-GroupMembers">
+                                <h5>@Model.SearchQuery</h5>
+                                @{
+                                    int cc = 0;
+                                    foreach (var item in @Model.GroupMembers)
+                                    {
+                                        string type = @Model.MemberTypes[cc];
+                                        <button type="button" data-ObjectType="@type" class="list-group-item list-group-item-action active">
+                                            @item
+                                        </button>
+                                        cc++;
+
+                                    }
+                                }
+                            </div>
+                        </div>
+                        <div class="col-lg-6" style="max-height:500px; overflow:auto">
+                            <h5>Object List</h5>
+                            @{ foreach (var item in @Model.ADActiveUserList)
+                                {
+                                    <button class="list-group-item list-group-item-action active">@item</button>
+                                }
+                            }
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <div id="GroupInfo" style="padding-bottom:20px" class="container">
+                        <div class="jumbotron">
+                            <h1>Welcome!</h1>
+                            <p class="lead">Use the search bar on the left to search the Group Directory.</p>
+                        </div>
+                    </div>
+                }
+            }
+        </div>
+
+    }
+    else
+    {
+        Response.Redirect("/Login");
+
+    }
+    @section scripts{
+        @await Html.PartialAsync("_ValidationScriptsPartial")
+
+    }
+
+}
+
