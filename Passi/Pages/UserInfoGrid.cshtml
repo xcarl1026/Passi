@@ -76,13 +76,13 @@
 
                         foreach (var item in @Model.ADUser.SecurityGroups)
                         {
-                            //<form asp-page="GroupDirectory" asp-page-handler="get" method="get">
+                            /*<form asp-page="GroupDirectory" asp-page-handler="get" method="get">
                                 <input type="hidden" name="id" value="@item" />
                                 <button type="submit" value="@item" class="list-group-item list-group-item-action active">@item</button>
-                           // </form>
-                            /*<button type="button" id="@item" onClick="GetGroupMembers(this.id)" class="list-group-item list-group-item-action active">
+                            </form>/*/
+                            <button type="button" id="@item" onClick="GetGroupMembers(this.id)" class="list-group-item list-group-item-action active">
                                  @item
-                            </button>*/
+                            </button>
                         }
                     }
                 </div>
