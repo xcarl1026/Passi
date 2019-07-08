@@ -39,7 +39,7 @@ namespace Passi.Pages
             }
         }
 
-        /* [HttpPost]
+         [HttpPost]
          public ContentResult OnPostResetPassword(IFormCollection formCollection)
          {
              string domain = HttpContext.Session.GetString("Domain");
@@ -53,19 +53,8 @@ namespace Passi.Pages
              }
              return Content(StatusMessage);
 
-         }*/
+         }
 
-        [HttpPost]
-        public ContentResult OnPostResetPassword(IFormCollection formCollection)
-        {
-            string domain = HttpContext.Session.GetString("Domain");
-            string pw = formCollection["ResetPassword"];
-            string searchQuery = formCollection["searchQuery"];
-            string StatusMessage = "";
-           
-            return Content(StatusMessage);
-
-        }
 
         public void OnPostUnlockAccount()
         {
