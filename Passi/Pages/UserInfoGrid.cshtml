@@ -9,6 +9,7 @@
     {
         <div class="row">
             <div class="col-lg-6" id="col">
+                <!-- need token for unlock button (form) try form inside modal and then fire with ok-->
                 <button class="btn btn-outline-primary" id="unlockacc">Unlock Account</button>
                 <button style="min-width:135.98pt" class="btn btn-outline-primary" id="resetpw">Reset Pasword</button>
                 <p></p>
@@ -75,13 +76,13 @@
 
                         foreach (var item in @Model.ADUser.SecurityGroups)
                         {
-                            /*<form asp-page="GroupDirectory" method="get">
+                            //<form asp-page="GroupDirectory" asp-page-handler="get" method="get">
                                 <input type="hidden" name="id" value="@item" />
                                 <button type="submit" value="@item" class="list-group-item list-group-item-action active">@item</button>
-                            </form>*/
-                            <button type="button" id="@item" onClick="GetGroupMembers(this.id)" class="list-group-item list-group-item-action active">
+                           // </form>
+                            /*<button type="button" id="@item" onClick="GetGroupMembers(this.id)" class="list-group-item list-group-item-action active">
                                  @item
-                            </button>
+                            </button>*/
                         }
                     }
                 </div>
