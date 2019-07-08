@@ -39,6 +39,22 @@ namespace Passi.Pages
             }
         }
 
+        /* [HttpPost]
+         public ContentResult OnPostResetPassword(IFormCollection formCollection)
+         {
+             string domain = HttpContext.Session.GetString("Domain");
+             string pw = formCollection["ResetPassword"];
+             string searchQuery = formCollection["searchQuery"];
+             string StatusMessage = "";
+             Console.WriteLine(pw + " AND " + searchQuery);
+             if (!string.IsNullOrEmpty(searchQuery) && !string.IsNullOrEmpty(pw))
+             {
+                 StatusMessage = new DirectoryMethods().ResetPassword(searchQuery, pw);
+             }
+             return Content(StatusMessage);
+
+         }*/
+
         [HttpPost]
         public ContentResult OnPostResetPassword(IFormCollection formCollection)
         {
@@ -46,13 +62,9 @@ namespace Passi.Pages
             string pw = formCollection["ResetPassword"];
             string searchQuery = formCollection["searchQuery"];
             string StatusMessage = "";
-            Console.WriteLine(pw + " AND " + searchQuery);
-            if (!string.IsNullOrEmpty(searchQuery) && !string.IsNullOrEmpty(pw))
-            {
-                StatusMessage = new DirectoryMethods().ResetPassword(searchQuery, pw);
-            }
-            return Content(StatusMessage);
            
+            return Content(StatusMessage);
+
         }
 
         public void OnPostUnlockAccount()
