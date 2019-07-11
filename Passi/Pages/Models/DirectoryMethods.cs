@@ -68,7 +68,12 @@ namespace Passi.Pages.Models
                     UserPrincipal u = UserPrincipal.FindByIdentity(context, IdentityType.SamAccountName, de.Properties["samAccountName"].Value.ToString());
                     if (u.Enabled == true)
                     {
-                        ADActiveUserList.Add(u.SamAccountName);
+                        Console.WriteLine(u.SamAccountName.ToLower() + " and " + AppAuth["Username"].ToLower());
+                        if(u.SamAccountName.ToLower() != AppAuth["Username"].ToLower())
+                        {
+                            ADActiveUserList.Add(u.SamAccountName);
+                        }
+                        
                     }
 
                 }
