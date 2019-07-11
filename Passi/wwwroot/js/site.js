@@ -158,12 +158,4 @@ document.getElementById('searchADUser').addEventListener('click', () => {
        //document.getElementById('grid').innerHTML = result;
    });
    return false;
-};*/
-
-document.getElementById("searchQuery").addEventListener("keyup", () => {
-    if (event.keyCode == 13) {
-        event.preventDefault();
-        document.getElementById("searchADUser").click();
-    }
-});
-
+   */
