@@ -7,33 +7,20 @@
 
 @{ if (!string.IsNullOrEmpty(Model.Username))
     {
-    <div class="row">
-        <div class="col-lg-6" id="col">
-            <div class="List-GroupMembers">
-                <h5>@Model.SearchQuery</h5>
-                @{
-                    int cc = 0;
-                    foreach (var item in @Model.GroupMembers)
-                    {
-                        string type = @Model.MemberTypes[cc];
-                        <button type="button" data-ObjectTyp="@type" class="list-group-item list-group-item-action active">
-                            @item
-                        </button>
-                        cc++;
-
+        <div class="row">
+            <div class="col-lg-12" id="col">
+                <div class="List-GroupMembers">
+                    @{
+                        foreach (var item in @Model.GroupeMembers)
+                        {
+                            <button type="button" class="list-group-item list-group-item-action">
+                                @item
+                            </button>
+                        }
                     }
-                }
+                </div>
             </div>
         </div>
-        <div class="col-lg-6" style="max-height:500px; overflow:auto">
-            <h5>Object List</h5>
-           @{ foreach (var item in @Model.ADActiveUserList)
-               {
-                   <button class="list-group-item list-group-item-action active">@item</button>
-               }
-           }
-        </div>
-    </div>
     }
     else
     {

@@ -146,14 +146,13 @@ namespace Passi.Pages.Models
                         userResult.SetPassword(password);
                         passwordStatusMessage = "Password was successfully changed.";
                     }
-                    
+                    userResult.Dispose();
+                    context.Dispose();
                 }
                 catch (PasswordException pEx)
                 {
                     passwordStatusMessage = pEx.Message;
                 }
-                userResult.Dispose();
-                context.Dispose();
             }
             catch (PrincipalException e)
             {
@@ -190,83 +189,28 @@ namespace Passi.Pages.Models
             }
             return accountUnlockStatus;
         }
-        //Retrieve all groups
-        public List<string> GetADGroupsList()
+        //Retireves a list of members of a group
+        public List<string> GetGroupMembers(string domain, string groupVal)
         {
-            List<string> adGroups = new List<string>();
-           try
-           {
-                PrincipalContext context = new PrincipalContext(ContextType.Domain, AppAuth["Domain"], AppAuth["Username"], AppAuth["Password"]);
-                //object to search - groups
-                GroupPrincipal groups = new GroupPrincipal(context);
-                //searcher to search groups
-                PrincipalSearcher searcher = new PrincipalSearcher(groups);
-
-                foreach (var found in searcher.FindAll())
-                {
-                    DirectoryEntry deFound = (DirectoryEntry)found.GetUnderlyingObject() as DirectoryEntry;
-                    if((int)deFound.Properties["samAccountType"].Value == 536870912)
-                    {
-                        Console.WriteLine("Groups is Alias Object (BuiltIn) and will not be aded to list.");
-                    }
-                    else
-                    {
-                        adGroups.Add(found.ToString());
-                    }
-                   
-                }
-                adGroups.Sort();
-
-           }catch(PrincipalException e)
-           {
-                Console.WriteLine(e.Message);
-           }
-         
-            return adGroups;
-        }
-        
-        public ADGroup GetADGroupDetails(string groupVal)
-        {
-            ADGroup adGroup = new ADGroup();
-            adGroup.GroupName = groupVal;
-            adGroup.GroupObjects = new List<ADGroupObject>();
-            adGroup.GroupObjectsNames = new List<string>();
+            List<string> gMembers = new List<string>();
             try
             {
-                PrincipalContext context = new PrincipalContext(ContextType.Domain, AppAuth["Domain"], AppAuth["Username"], AppAuth["Password"]);
+                PrincipalContext context = new PrincipalContext(ContextType.Domain, domain, AppAuth["Username"], AppAuth["Password"]);
                 GroupPrincipal group = GroupPrincipal.FindByIdentity(context, groupVal);
-                DirectoryEntry deGroupObject = group.GetUnderlyingObject() as DirectoryEntry;
-                foreach (Principal p in group.GetMembers())
+                foreach(Principal p in group.GetMembers())
                 {
-                    if (p.SamAccountName != null)
+                    if(p.SamAccountName != null)
                     {
-                        DirectoryEntry deP = p.GetUnderlyingObject() as DirectoryEntry;
-                        adGroup.GroupObjectsNames.Add(p.SamAccountName);
-                        ADGroupObject adGroupObject = new ADGroupObject();
-                        adGroupObject.SamAccountName = p.SamAccountName;
-                        adGroupObject.ObjectType = (int)deP.Properties["sAMAccountType"].Value;
-                        if(adGroupObject.ObjectType == 268435456 || adGroupObject.ObjectType == 268435457)
-                        {
-                            adGroupObject.ObjectTypeString = "group";
-                        }
-                        else
-                        {
-                            adGroupObject.ObjectTypeString = "user";
-                        }
-                        adGroup.GroupObjects.Add(adGroupObject);
+                        gMembers.Add(p.SamAccountName);
                     }
+                    
                 }
-                group.Dispose();
-                context.Dispose();
             }
-            catch (PrincipalException e)
+            catch(PrincipalException e)
             {
                 Console.WriteLine(e.Message);
             }
-            return adGroup;
+            return gMembers;
         }
-
-
-
     }
 }
