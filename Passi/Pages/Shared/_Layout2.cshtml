@@ -17,15 +17,15 @@
     </environment>
 </head>
 
-<body style="padding-top: 100px">
+<body>
     <nav class="navbar navbar-expand-lg fixed-top navbar-dark bg-primary">
         <div class="container-fluid">
             <div class="navbar-header">
                 <a class="navbar-brand">Project0</a>
             </div>
-            <ul class="navbar-nav mr-auto">
-                <li class="nav-item"><a asp-page="/Directory" class="nav-link">User Directory</a></li>
-                <li class="nav-item"><a asp-page="/GroupDirectory" class="nav-link">Group Directory</a></li>
+            <ul class="navbar-nav mr-auto"style="padding-left:35px;">
+                <li class="nav-item"><a asp-page="/Directory" class="nav-link" style="font-size:14pt;">User Directory</a></li>
+                <li class="nav-item"><a asp-page="/GroupDirectory" class="nav-link" style="font-size:14pt;">Group Directory</a></li>
                 <!--    <li><a asp-page="/Index">Home</a></li>
                 <li><a asp-page="/About">About</a></li>
                 <li><a asp-page="/Contact">Contact</a></li>
@@ -36,9 +36,7 @@
             </ul>
         </div>
     </nav>
-
     <partial name="_CookieConsentPartial" />
-
     <div class="main">
         <div class="container body-content">
             @RenderBody()
