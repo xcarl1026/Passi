@@ -84,18 +84,17 @@
                                 cc = 2;
                                 foreach (var item in @Model.ADUser.SecurityGroups)
                                 {
-                                    var query = "GroupDirectory/?=" + item;
                                     if (cc % 2 == 0)
                                     {
 
                                         <tr style="background-color: #d1f2f7;">
-                                            <td class="text-primary" style="font-size: 12pt;"><a href="@query">@item</a></td>
+                                            <td class="text-primary" style="font-size: 12pt;"><button type="button" style="background:transparent; border:none;" id="@item" onclick="GetGroupMembers(this.id)">@item</button></td>
                                         </tr>
                                     }
                                     else
                                     {
                                         <tr style="background-color: #b7ecf4;">
-                                            <td class="text-primary" style="font-size: 12pt;"><a href="@query">@item</a></td>
+                                            <td class="text-primary" style="font-size: 12pt;"><button type="button" style="background:transparent; border:none;" id="@item" onclick="GetGroupMembers(this.id)">@item</button></td>
                                         </tr>
                                     }
                                     cc++;

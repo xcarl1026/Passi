@@ -1,4 +1,4 @@
-﻿@page
+﻿@page "{searchQuery?}"
 @model GroupDirectoryModel
 @{
     ViewData["Title"] = "Group Directory";
@@ -19,7 +19,7 @@
                 }
             </div>
         </div>
-        <div id="GroupsInfo">
+        <div style="margin-top:65px;" id="GroupsInfo">
             @{ if (@Model.SearchQuery != null)
                 {
                     <div class="row">
@@ -31,12 +31,10 @@
                                     foreach (var item in @Model.GroupMembers)
                                     {
                                         string type = @Model.MemberTypes[cc];
-                                        <button type="button" data-ObjectType="@type" class="list-group-item list-group-item-action active">
-                                            @item
-                                        </button>
-                                        cc++;
-
+                                        <button type="submit" class="list-group-item list-group-item-action active">@item</button>
                                     }
+                                    cc++;
+
                                 }
                             </div>
                         </div>

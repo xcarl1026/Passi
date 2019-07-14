@@ -1,4 +1,4 @@
-﻿@page "{searchQuery?}"
+﻿@page "{searchQuery?}/{previousPage?}"
 @model GroupsInfoModel
 @{
     Layout = null;
@@ -16,7 +16,7 @@
                     foreach (var item in @Model.GroupMembers)
                     {
                         string type = @Model.MemberTypes[cc];
-                        <button type="button" data-ObjectTyp="@type" class="list-group-item list-group-item-action active">
+                        <button type="button" data-ObjectTyp="@type" onclick="GroupDirectoryMember(this.getAttribute('data-ObjectType'))" class="list-group-item list-group-item-action active">
                             @item
                         </button>
                         cc++;

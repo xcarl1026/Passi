@@ -3,11 +3,10 @@
 
 // Write your Javascript code.
 
+//global value for query data 
 var searchQuery;
-$('#searchADUser').on('click', searchADUser);
 
-
-function searchADUser() {
+/*function searchADUser() {
     searchQuery = $('#searchQuery').val();
     var url = 'UserInfoGrid/' + $('#searchQuery').val();
     fetch(url)
@@ -19,9 +18,9 @@ function searchADUser() {
             $('#resetpw').on('click', ResetPassword);
             $('#unlockAccBtn').on('click', UnlockAcc)
         })
-}
-
-function SearchADUser2(btnID) {
+}*/
+//Function for buttons in the side navbar in Directory page
+function SearchADUser(btnID) {
     searchQuery = btnID;
     var url = 'UserInfoGrid/' + searchQuery;
     fetch(url)
@@ -30,14 +29,15 @@ function SearchADUser2(btnID) {
         })
         .then((result) => {
             $('#UserInfo').html(result);
-            $('#resetpw').on('click', ResetPassword);
-            $('#unlockAccBtn').on('click', UnlockAcc)
+            $('#resetpw').on('click', LaunchResetModal);
+            $('#unlockAccBtn').on('click', LaunchUnlockModal)
         })
 }
 
+//Functions for button in the side navbar in GroupDirectory page
 function SearchADGroup(btnID) {
     searchQuery = btnID;
-    var url = 'GroupsInfo/' + searchQuery;
+    var url = '/GroupsInfo/' + searchQuery;
     fetch(url)
         .then((response) => {
             return response.text();
@@ -47,6 +47,7 @@ function SearchADGroup(btnID) {
         })
 }
 
+//Function for search bar in Directory page
 $("#searchUserList").on("keyup", FilterUserList);
 function FilterUserList() {
     var value = $(this).val().toLowerCase();
@@ -55,6 +56,7 @@ function FilterUserList() {
     });
 }
 
+//Function for search bad in GroupDirectory page
 $("#searchGroupList").on("keyup", FilterGroupList);
 function FilterGroupList() {
     var value = $(this).val().toLowerCase();
@@ -63,44 +65,28 @@ function FilterGroupList() {
     });
 }
 
-
+//marked for deletion
 function GetGroupMembers(btnID) {
     searchQuery = btnID;
-    var url = 'GroupsInfo/' + searchQuery;
-    fetch(url)
-        .then((response) => {
-            return response.text();
-        })
-        .then((result) => {
-            $('#UserInfo').html(result);
-        })
+    var url = 'GroupDirectory/' + searchQuery;
+    location.replace(url);
 }
 
-function UnlockAcc() {
+//Sets display properties for Unlock Modal
+function LaunchUnlockModal() {
     $('#UnlockModal').css('display', 'block');
     $('#closeUnlockModalBtn').on('click', function close() { $('#UnlockModal').css('display', 'none'); $('#modalUnlockStatus').html("Press OK to send the unlock command."); });
     $('#xUnlockModalBtn').on('click', function close() { $('#UnlockModal').css('display', 'none'); $('#modalUnlockStatus').html("Press OK to send the unlock command."); });
 }
 
-function ResetPassword() {
+//Sets display properties for Reset Modal
+function LaunchResetModal() {
     $('#resetModal').css('display', 'block');
     $('#xModalBtn').on('click', function close() { $('#resetModal').css('display', 'none'); });
     $('#closeModalBtn').on('click', function close() { $('#modalPWResetStatus').html(""); $('#resetModal').css('display', 'none'); });
 }
 
-/*function UnlockAcc() {
-    var url = '/UserInfoGrid?handler=UnlockAccount' + searchQuery;
-    fetch(url, {
-        method: 'post'
-    })
-        .then(() => {
-            $('#UnlockModal').css('display', 'block');
-            $('#xUnlockModalBtn').on('click', function close() { $('#UnlockModal').css('display', 'none'); });
-            $('#closeUnlockModalBtn').on('click', function close() { $('#UnlockModal').css('display', 'none'); });
-        })
-
-}*/
-
+//Submit action for OK button in Reset Modal
 $('#pwResetForm').submit(function (event) {
     let formData = new FormData(document.forms[0]);
     formData.append('searchQuery', searchQuery);
@@ -119,6 +105,7 @@ $('#pwResetForm').submit(function (event) {
     event.preventDefault();
 });
 
+//Submit action for OK button in Unlock Modal
 $('#unlockAccForm').submit(function (event) {
     let formData = new FormData(document.forms[1]);
     formData.append('searchQuery', searchQuery);
@@ -137,46 +124,14 @@ $('#unlockAccForm').submit(function (event) {
     event.preventDefault();
 });
 
+function GetGroupMemberInfo(objectType, btnID) {
+    var url;
+    if (objectType == "user") {
+        url = "Directory/1/" + btnID;
+        location.replace(url);
+    } else {
+        url = "GroupDirectory/" + btnID;
+        location.replace(url);
+    }
 
-
-
-/* var resetModal;
-document.getElementById('searchADUser').addEventListener('click', () => {
-    searchQuery = document.getElementById("searchQuery").value;
-    var page = '/UserInfoGrid/'
-    var url = page + searchQuery;
-    fetch(url)
-        .then((response) => {
-            return response.text();
-        })
-        .then((result) => {
-            document.getElementById('grid').innerHTML = result;
-            document.getElementById('resetpw').addEventListener('click', () => {
-                resetModal = document.getElementById('resetModal');
-                resetModal.style.display = "block";
-                document.getElementById("xModalBtn").addEventListener('click', () => {
-                    resetModal.style.display = "none";
-                });
-                document.getElementById("closeModalBtn").addEventListener('click', () => {
-                    resetModal.style.display = "none";
-                });
-
-            });
-        });
-});*/
-
-/*document.forms[0].onsubmit = () => {
-   let formData = new FormData(document.forms[0]);
-   fetch('/UserInfoGrid?handler=ResetPassword', {
-       method: 'post',
-       body: new URLSearchParams(formData)
-   })
-       .then((response) => {
-           response.text();
-           alert('Posted using Fetch');
-       })
-       .then((result) => {
-       //document.getElementById('grid').innerHTML = result;
-   });
-   return false;
-   */
+}
