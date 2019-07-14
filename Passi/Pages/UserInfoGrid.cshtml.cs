@@ -56,19 +56,20 @@ namespace Passi.Pages
          }
 
 
-        public void OnPostUnlockAccount()
+        public ContentResult OnPostUnlockAccount(IFormCollection formCollection)
         {
             string domain = HttpContext.Session.GetString("Domain");
             string accountUnlockStatus = string.Empty;
-            if (RouteData.Values["searchQuery"] != null)
+            string searchQuery = formCollection["searchQuery"];
+            if (!string.IsNullOrEmpty(searchQuery))
             {
-                searchQuery = RouteData.Values["searchQuery"].ToString();
                 accountUnlockStatus = new DirectoryMethods().UnlockAccount(searchQuery);
             }
             else
             {
-                Console.WriteLine("No searchQuery val");
+                accountUnlockStatus = "Did not receive username to unlock account.";
             }
+            return Content(accountUnlockStatus);
             
         }
 

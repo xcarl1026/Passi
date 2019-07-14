@@ -8,7 +8,7 @@
 @{ if (!string.IsNullOrEmpty(Model.Username))
     {
     <div class="sidenav">
-        <input style="background-color:#2d2d2c;font-size:1.0rem;text-align:left;color:#F8FBFF" type="text" class="form-control" id="searchInput" placeholder="Search" value="">
+        <input style="background-color:#2d2d2c;font-size:1.0rem;text-align:left;color:#F8FBFF" type="text" class="form-control" id="searchUserList" placeholder="Search" value="">
         <div id="UserList">
             @{
                 foreach (var item in Model.ADActiveUserList)
@@ -58,10 +58,13 @@
                     </button>
                 </div>
                 <div class="modal-body" id="modalUnlockStatus">
-                    Unlock command sent.
+                    Press OK to send the unlock command. 
                 </div>
                 <div id="mfooter" class="modal-footer">
-                    <button type="button" id="closeUnlockModalBtn" class="btn btn-primary" data-dismiss="modal">Ok</button>
+                    <form id="unlockAccForm" method="post">
+                    <button type="submit" id="passwordResetOKBtn" class="btn btn-primary" data-dismiss="modal">Ok</button>
+                    </form>
+                    <button type="button" id="closeUnlockModalBtn" class="btn btn-secondary" data-dismiss="modal">Close</button>
                 </div>
             </div>
         </div>

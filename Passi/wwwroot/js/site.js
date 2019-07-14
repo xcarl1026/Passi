@@ -17,7 +17,7 @@ function searchADUser() {
         .then((result) => {
             $('#UserInfo').html(result);
             $('#resetpw').on('click', ResetPassword);
-            $('#unlockacc').on('click', UnlockAcc)
+            $('#unlockAccBtn').on('click', UnlockAcc)
         })
 }
 
@@ -31,7 +31,7 @@ function SearchADUser2(btnID) {
         .then((result) => {
             $('#UserInfo').html(result);
             $('#resetpw').on('click', ResetPassword);
-            $('#unlockacc').on('click', UnlockAcc)
+            $('#unlockAccBtn').on('click', UnlockAcc)
         })
 }
 
@@ -47,16 +47,16 @@ function SearchADGroup(btnID) {
         })
 }
 
-$("#searchInput").on("keyup", FilterList);
-function FilterList() {
+$("#searchUserList").on("keyup", FilterUserList);
+function FilterUserList() {
     var value = $(this).val().toLowerCase();
     $("#UserList :button").filter(function () {
         $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
     });
 }
 
-$("#searchInput2").on("keyup", FilterList);
-function FilterList() {
+$("#searchGroupList").on("keyup", FilterGroupList);
+function FilterGroupList() {
     var value = $(this).val().toLowerCase();
     $("#GroupList :button").filter(function () {
         $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
@@ -76,6 +76,11 @@ function GetGroupMembers(btnID) {
         })
 }
 
+function UnlockAcc() {
+    $('#UnlockModal').css('display', 'block');
+    $('#closeUnlockModalBtn').on('click', function close() { $('#UnlockModal').css('display', 'none'); $('#modalUnlockStatus').html("Press OK to send the unlock command."); });
+    $('#xUnlockModalBtn').on('click', function close() { $('#UnlockModal').css('display', 'none'); $('#modalUnlockStatus').html("Press OK to send the unlock command."); });
+}
 
 function ResetPassword() {
     $('#resetModal').css('display', 'block');
@@ -83,7 +88,7 @@ function ResetPassword() {
     $('#closeModalBtn').on('click', function close() { $('#modalPWResetStatus').html(""); $('#resetModal').css('display', 'none'); });
 }
 
-function UnlockAcc() {
+/*function UnlockAcc() {
     var url = '/UserInfoGrid?handler=UnlockAccount' + searchQuery;
     fetch(url, {
         method: 'post'
@@ -94,7 +99,7 @@ function UnlockAcc() {
             $('#closeUnlockModalBtn').on('click', function close() { $('#UnlockModal').css('display', 'none'); });
         })
 
-}
+}*/
 
 $('#pwResetForm').submit(function (event) {
     let formData = new FormData(document.forms[0]);
@@ -114,7 +119,23 @@ $('#pwResetForm').submit(function (event) {
     event.preventDefault();
 });
 
-
+$('#unlockAccForm').submit(function (event) {
+    let formData = new FormData(document.forms[1]);
+    formData.append('searchQuery', searchQuery);
+    fetch('/UserInfoGrid?handler=UnlockAccount', {
+        method: 'post',
+        body: new URLSearchParams(formData)
+    })
+        .then((response) => {
+            return response.text();
+            //alert('Posted using Fetch');
+        })
+        .then((result) => {
+            //var html = result.html();
+            $('#modalUnlockStatus').html(result);
+        })
+    event.preventDefault();
+});
 
 
 

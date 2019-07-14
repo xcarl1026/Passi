@@ -68,7 +68,11 @@ namespace Passi.Pages.Models
                     UserPrincipal u = UserPrincipal.FindByIdentity(context, IdentityType.SamAccountName, de.Properties["samAccountName"].Value.ToString());
                     if (u.Enabled == true)
                     {
-                        ADActiveUserList.Add(u.SamAccountName);
+                        if(u.SamAccountName != AppAuth["Username"])
+                        {
+                            ADActiveUserList.Add(u.SamAccountName);
+                        }
+                        
                     }
 
                 }
@@ -111,7 +115,7 @@ namespace Passi.Pages.Models
                     DirectoryEntry deUser = userResult.GetUnderlyingObject() as DirectoryEntry;
                     DirectoryEntry deUserContainer = deUser.Parent;
                     user.OU = deUserContainer.Properties["distinguishedName"].Value.ToString();
-                   // Console.WriteLine(properties["distinguishedName"].Value.ToString());
+                    // Console.WriteLine(properties["distinguishedName"].Value.ToString());
                     user.DisplayName = userResult.DisplayName;
                     user.UserName = userResult.SamAccountName;
                     user.EmailAddress = userResult.EmailAddress;
@@ -143,8 +147,14 @@ namespace Passi.Pages.Models
                 {
                     if (userResult != null)
                     {
-                        userResult.SetPassword(password);
-                        passwordStatusMessage = "Password was successfully changed.";
+                        try
+                        {
+                            userResult.SetPassword(password);
+                            passwordStatusMessage = "Password was successfully changed.";
+                        }catch(Exception e)
+                        {
+                            passwordStatusMessage = e.Message;
+                        }
                     }
                     
                 }

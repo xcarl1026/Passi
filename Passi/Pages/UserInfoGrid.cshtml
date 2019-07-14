@@ -7,104 +7,139 @@
 
 @{ if (!string.IsNullOrEmpty(Model.Username))
     {
-        <div class="row">
-            <div class="col-lg-6" id="col">
-                <!-- need token for unlock button (form) try form inside modal and then fire with ok-->
-                <button class="btn btn-outline-primary" id="unlockacc">Unlock Account</button>
-                <button style="min-width:135.98pt" class="btn btn-outline-primary" id="resetpw">Reset Pasword</button>
-                <p></p>
-                <h5>Basic Info</h5>
-                <table style="table-layout:fixed" class="table table-sm table-dark">
-                    <tbody>
-                        <tr>
-                            <td>Username</td>
-                            <td>@Model.ADUser.UserName</td>
-                        </tr>
-                        <tr>
-                            <td>Display Name</td>
-                            <td>@Model.ADUser.DisplayName</td>
-                        </tr>
-                        <tr>
-                            <td>Email Address</td>
-                            <td>@Model.ADUser.EmailAddress</td>
-                        </tr>
-                        <tr>
-                            <td>Account Locked</td>
-                            <td>@Model.ADUser.AccountLocked</td>
-                        </tr>
-                        <tr>
-                            <td>Container</td>
-                            <td style="word-wrap:break-word;">@Model.ADUser.OU</td>
-                        </tr>
-                    </tbody>
-                </table>
-                <h5>Proxy Addresses</h5>
-                <table class="table table-sm table-dark">
-                    <tbody>
-                        @{
-
-                            foreach (var item in @Model.ADUser.ProxyAddresses)
-                            {
-                                <tr>
-                                    <td>@item</td>
-                                </tr>
-                            }
-                        }
-                    </tbody>
-                </table>
-                <h5>Password Stats</h5>
-                <table class="table table-sm table-dark">
-                    <tbody>
-                        <tr>
-                            <td>Last Workstation Logon</td>
-                            <td>@Model.ADUser.LastLogon</td>
-                        </tr>
-                        <tr>
-                            <td>Last Bad Password Attempt</td>
-                            <td>@Model.ADUser.LastBadPasswordAttempt</td>
-                        </tr>
-                        <tr>
-                            <td>User Cannot Change Password</td>
-                            <td>@Model.ADUser.UserCannotChangePassword</td>
-                        </tr>
-                    </tbody>
-                </table>
+    <div class="row">
+        <div class="col-lg-6" id="col">
+            <!-- need token for unlock button (form) try form inside modal and then fire with ok-->
+            <button class="btn btn-outline-primary" id="unlockAccBtn">Unlock Account</button>
+            <button style="min-width:135.98pt" class="btn btn-outline-primary" id="resetpw">Reset Pasword</button>
+            <p></p>
+            <div class="card border-info mb-3" style="max-width: 40rem;">
+                <div class="card-header text-primary" style="font-size: 18pt">Basic Info</div>
+                <div class="card-body">
+                    <table style="table-layout:fixed;" class="table table-sm">
+                        <tbody>
+                            <tr style="background-color: #d1f2f7;">
+                                <td class="text-primary" style="font-size: 12pt;">Username</td>
+                                <td class="text-primary" style="font-size: 12pt;">@Model.ADUser.UserName</td>
+                            </tr>
+                            <tr style="background-color: #b7ecf4;">
+                                <td class="text-primary" style="font-size: 12pt;">Display Name</td>
+                                <td class="text-primary" style="font-size: 12pt;">@Model.ADUser.DisplayName</td>
+                            </tr>
+                            <tr style="background-color: #d1f2f7;">
+                                <td class="text-primary" style="font-size: 12pt;">Email Address</td>
+                                <td class="text-primary" style="font-size: 12pt;">@Model.ADUser.EmailAddress</td>
+                            </tr>
+                            <tr style="background-color: #b7ecf4;">
+                                <td class="text-primary" style="font-size: 12pt;">Account Locked</td>
+                                <td class="text-primary" style="font-size: 12pt;">@Model.ADUser.AccountLocked</td>
+                            </tr>
+                            <tr style="background-color: #d1f2f7;">
+                                <td class="text-primary" style="font-size: 12pt;">Container</td>
+                                <td class="text-primary" style="word-wrap:break-word; font-size: 12pt;">@Model.ADUser.OU</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
-            <div style="padding-top:93px" class="col-lg-6" id="grid2">
-                <div class="list-group">
-                   <!-- @{
+            <div class="card border-info mb-3" style="max-width: 40rem;">
+                <div class="card-header text-primary" style="font-size: 18pt">Proxy Addresses</div>
+                <div class="card-body">
+                    <table class="table table-sm">
+                        <tbody>
+                            @{
+                                int cc = 2;
+                                foreach (var item in @Model.ADUser.ProxyAddresses)
+                                {
 
-                        foreach (var item in @Model.ADUser.SecurityGroups)
-                        {
-                            var query = "GroupDirectory/?=" + item;
-                            <a href="@query" class="list-group-item list-group-item-action active">@item</a>                           
-                        }
-                       }
-                    -->
+                                    if (cc % 2 == 0)
+                                    {
+                                        <tr style="background-color: #d1f2f7;">
+                                            <td class="text-primary" style="font-size: 12pt;">@item</td>
+                                        </tr>
+                                    }
+                                    else
+                                    {
+                                        <tr style="background-color: #b7ecf4;">
+                                            <td class="text-primary" style="font-size: 12pt;">@item</td>
+                                        </tr>
+                                    }
+                                    cc++;
+
+                                }
+                            }
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
+        <div style="padding-top:69px" class="col-lg-6" id="grid2">
+            <div class="card border-info mb-3" style="max-width: 40rem; min-height: 25.5rem;">
+                <div class="card-header text-primary" style="font-size: 18pt">Member Of</div>
+                <div class="card-body">
+                    <table class="table table-sm">
+                        <tbody>
+                            @{
+                                cc = 2;
+                                foreach (var item in @Model.ADUser.SecurityGroups)
+                                {
+                                    var query = "GroupDirectory/?=" + item;
+                                    if (cc % 2 == 0)
+                                    {
+
+                                        <tr style="background-color: #d1f2f7;">
+                                            <td class="text-primary" style="font-size: 12pt;"><a href="@query">@item</a></td>
+                                        </tr>
+                                    }
+                                    else
+                                    {
+                                        <tr style="background-color: #b7ecf4;">
+                                            <td class="text-primary" style="font-size: 12pt;"><a href="@query">@item</a></td>
+                                        </tr>
+                                    }
+                                    cc++;
+
+                                }
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="card border-info mb-3" style="max-width: 40rem;">
+                <div class="card-header text-primary" style="font-size: 18pt">Password Stats</div>
+                <div class="card-body">
+                    <table class="table table-sm">
+                        <tbody>
+                            <tr style="background-color: #d1f2f7;">
+                                <td class="text-primary" style="font-size: 12pt;">Last Workstation Logon</td>
+                                <td class="text-primary" style="font-size: 12pt;">@Model.ADUser.LastLogon</td>
+                            </tr>
+                            <tr style="background-color: #b7ecf4;">
+                                <td class="text-primary" style="font-size: 12pt;">Last Bad Password Attempt</td>
+                                <td class="text-primary" style="font-size: 12pt;">@Model.ADUser.LastBadPasswordAttempt</td>
+                            </tr>
+                            <tr style="background-color: #d1f2f7;">
+                                <td class="text-primary" style="font-size: 12pt;">User Cannot Change Password</td>
+                                <td class="text-primary" style="font-size: 12pt;">@Model.ADUser.UserCannotChangePassword</td>
+                            </tr>
+                            <tr style="background-color: #b7ecf4;">
+                                <td class="text-primary" style="font-size: 12pt;">Account Locked</td>
+                                <td class="text-primary" style="font-size: 12pt;">@Model.ADUser.AccountLocked</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
     }
     else
     {
-        <div class="jumbotron"><h1>Your session expired. Please refresh the page and logon.</h1></div>
+    <div class="jumbotron"><h1>Your session expired. Please refresh the page and logon.</h1></div>
 
     }
     @section scripts{
         @await Html.PartialAsync("_ValidationScriptsPartial")
 
-    }
+        }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-

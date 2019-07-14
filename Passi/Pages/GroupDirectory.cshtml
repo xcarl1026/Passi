@@ -9,7 +9,7 @@
     if (!string.IsNullOrEmpty(@Model.Username))
     {
         <div class="sidenav">
-            <input style="background-color:#2d2d2c;font-size:1.0rem;text-align:left;color:#F8FBFF" type="text" class="form-control" id="searchInput2" placeholder="Search" value="">
+            <input style="background-color:#2d2d2c;font-size:1.0rem;text-align:left;color:#F8FBFF" type="text" class="form-control" id="searchGroupList" placeholder="Search" value="">
             <div id="GroupList">
                 @{
                     foreach (var item in Model.ADGroupsList)
@@ -23,7 +23,7 @@
             @{ if (@Model.SearchQuery != null)
                 {
                     <div class="row">
-                        <div class="col-lg-6" id="col">
+                        <div class="col-lg-5" id="col">
                             <div class="List-GroupMembers">
                                 <h5>@Model.SearchQuery</h5>
                                 @{
@@ -40,7 +40,12 @@
                                 }
                             </div>
                         </div>
-                        <div class="col-lg-6" style="max-height:500px; overflow:auto">
+                        <div style="padding-top:100px" class="col-lg-1">
+                            <button type="button">Add</button>
+                            <p></p>
+                            <button type="button">Remove</button>
+                        </div>
+                        <div class="col-lg-5" style="max-height:500px; overflow:auto">
                             <h5>Object List</h5>
                             @{ foreach (var item in @Model.ADActiveUserList)
                                 {
