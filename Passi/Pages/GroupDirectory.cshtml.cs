@@ -25,9 +25,9 @@ namespace Passi.Pages
             DirectoryMethods dirMethods = new DirectoryMethods();
             ADGroupsList = dirMethods.GetADGroupsList();
             Username = HttpContext.Session.GetString("Username");
-            if (RouteData.Values["searchQuery"] != null)
+            if (id != null)
             {
-                SearchQuery = RouteData.Values["searchQuery"].ToString();
+                SearchQuery = id;
                 GroupDetails = dirMethods.GetADGroupDetails(SearchQuery);
                 GroupMembers = GroupDetails.GroupObjectsNames;
                 MemberTypes = new List<string>();

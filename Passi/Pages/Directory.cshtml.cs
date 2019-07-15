@@ -21,12 +21,27 @@ namespace Passi.Pages
         [Required]
         public string ResetPassword { get; set; }
         public List<string> ADActiveUserList { get; set; }
+        public ADUser ADUser { get; set; }
 
-        public void OnGet()
+        public void OnGet(string id)
         {
             Username = HttpContext.Session.GetString("Username");
             Domain = HttpContext.Session.GetString("Domain");
             ADActiveUserList = new DirectoryMethods().GetADUserList(Domain);
+            ADUser = null;
+            if(id != null)
+            {
+                searchQuery = id;
+                string domain = HttpContext.Session.GetString("Domain");
+                Console.WriteLine(searchQuery);
+                ADUser user = new DirectoryMethods().DirectorySearch(searchQuery, domain);
+                ADUser = user;
+
+            }
+            else
+            {
+                Console.WriteLine("string was empty or null");
+            }
         }
     }
 

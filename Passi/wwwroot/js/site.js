@@ -68,7 +68,7 @@ function FilterGroupList() {
 //marked for deletion
 function GetGroupMembers(btnID) {
     searchQuery = btnID;
-    var url = 'GroupDirectory/' + searchQuery;
+    var url = 'GroupDirectory?=' + searchQuery;
     location.replace(url);
 }
 
@@ -126,12 +126,13 @@ $('#unlockAccForm').submit(function (event) {
 
 function GetGroupMemberInfo(objectType, btnID) {
     var url;
-    if (objectType == "user") {
-        url = "Directory/1/" + btnID;
+   alert("I'm " + objectType + "and name is" + btnID);
+    /*if (objectType == "user") {
+        url = "Directory?=" + btnID;
         location.replace(url);
     } else {
-        url = "GroupDirectory/" + btnID;
+        url = "GroupDirectory?=" + btnID;
         location.replace(url);
-    }
+    }*/
 
 }

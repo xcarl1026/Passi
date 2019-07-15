@@ -1,4 +1,4 @@
-﻿@page "{searchQuery?}"
+﻿@page
 @model GroupDirectoryModel
 @{
     ViewData["Title"] = "Group Directory";
@@ -31,9 +31,10 @@
                                     foreach (var item in @Model.GroupMembers)
                                     {
                                         string type = @Model.MemberTypes[cc];
-                                        <button type="submit" class="list-group-item list-group-item-action active">@item</button>
+                                        <button type="button" id="@item" data-ObjectType="@type" onclick="GetGroupMemberInfo(this.getAttribute('data-ObjectType'), this.id)" class="list-group-item list-group-item-action active">@item</button>
+                                        cc++;
                                     }
-                                    cc++;
+                                    
 
                                 }
                             </div>
