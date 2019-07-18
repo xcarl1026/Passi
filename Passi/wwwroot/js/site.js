@@ -126,13 +126,13 @@ $('#unlockAccForm').submit(function (event) {
 
 function GetGroupMemberInfo(objectType, btnID) {
     var url;
-   alert("I'm " + objectType + "and name is" + btnID);
-    /*if (objectType == "user") {
+   //alert("I'm " + objectType + "and name is" + btnID);
+    if (objectType == "user") {
         url = "Directory?=" + btnID;
         location.replace(url);
     } else {
         url = "GroupDirectory?=" + btnID;
         location.replace(url);
-    }*/
+    }
 
 }

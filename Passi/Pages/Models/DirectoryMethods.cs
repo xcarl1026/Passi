@@ -43,7 +43,7 @@ namespace Passi.Pages.Models
             PrincipalContext context = null;
             try
             {
-                context = new PrincipalContext(ContextType.Domain, AppAuth["Domain"], AppAuth["Username"], AppAuth["Password"]);
+                context = new PrincipalContext(ContextType.Domain, AppAuth["Domain"], AppAuth["Scope"], AppAuth["Username"], AppAuth["Password"]);
             }
             catch(PrincipalException e)
             {

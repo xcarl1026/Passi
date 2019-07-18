@@ -23,35 +23,41 @@
             @{ if (@Model.SearchQuery != null)
                 {
                     <div class="row">
-                        <div class="col-lg-5" id="col">
+                        <div class="col-lg-6" id="col" style="margin-left:230px;">
                             <div class="List-GroupMembers">
-                                <h5>@Model.SearchQuery</h5>
-                                @{
-                                    int cc = 0;
-                                    foreach (var item in @Model.GroupMembers)
-                                    {
-                                        string type = @Model.MemberTypes[cc];
-                                        <button type="button" id="@item" data-ObjectType="@type" onclick="GetGroupMemberInfo(this.getAttribute('data-ObjectType'), this.id)" class="list-group-item list-group-item-action active">@item</button>
-                                        cc++;
-                                    }
-                                    
+                                <div class="card border-info mb-3" style="max-width: 40rem;">
+                                    <div class="card-header text-primary" style="font-size: 18pt">@Model.SearchQuery</div>
+                                    <div class="card-body">
+                                        <table style="table-layout:fixed;" class="table table-sm">
+                                            <tbody>
+                                                @{
 
-                                }
+                                                    int cc = 0;
+                                                    int jj = 2;
+                                                    foreach (var item in @Model.GroupMembers)
+                                                    {
+                                                        var type = Model.MemberTypes[cc];
+                                                        if (jj % 2 == 0)
+                                                        {
+                                                            <tr style="background-color: #d1f2f7;">
+                                                                <td class="text-primary" style="font-size: 12pt;"><button type="button" style="background:transparent; border:none;" id="@item" data-ObjectType="@type" onclick="GetGroupMemberInfo(this.getAttribute('data-ObjectType'), this.id)">@item</button></td>
+                                                            </tr>
+                                                        }
+                                                        else
+                                                        {
+                                                            <tr style="background-color: #b7ecf4;">
+                                                                <td class="text-primary" style="font-size: 12pt;"><button type="button" style="background:transparent; border:none;" id="@item" data-ObjectType="@type" onclick="GetGroupMemberInfo(this.getAttribute('data-ObjectType'), this.id)">@item</button></td>
+                                                            </tr>
+                                                        }
+                                                        cc++;
+                                                    }
+                                                }        
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>   
                             </div>
-                        </div>
-                        <div style="padding-top:100px" class="col-lg-1">
-                            <button type="button">Add</button>
-                            <p></p>
-                            <button type="button">Remove</button>
-                        </div>
-                        <div class="col-lg-5" style="max-height:500px; overflow:auto">
-                            <h5>Object List</h5>
-                            @{ foreach (var item in @Model.ADActiveUserList)
-                                {
-                                    <button class="list-group-item list-group-item-action active">@item</button>
-                                }
-                            }
-                        </div>
+                        </div> 
                     </div>
                 }
                 else
