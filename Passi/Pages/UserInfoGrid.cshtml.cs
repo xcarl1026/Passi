@@ -10,6 +10,8 @@ using System.IO;
 using System.DirectoryServices.AccountManagement;
 using System.ComponentModel.DataAnnotations;
 using System.DirectoryServices;
+using System.Text.RegularExpressions;
+using System.Text;
 
 namespace Passi.Pages
 {
@@ -42,6 +44,7 @@ namespace Passi.Pages
          [HttpPost]
          public ContentResult OnPostResetPassword(IFormCollection formCollection)
          {
+             Regex rx = new Regex(@"(.*)\.", RegexOptions.Compiled | RegexOptions.IgnoreCase);
              string domain = HttpContext.Session.GetString("Domain");
              string pw = formCollection["ResetPassword"];
              string searchQuery = formCollection["searchQuery"];
@@ -49,7 +52,14 @@ namespace Passi.Pages
              Console.WriteLine(pw + " AND " + searchQuery);
              if (!string.IsNullOrEmpty(searchQuery) && !string.IsNullOrEmpty(pw))
              {
-                 StatusMessage = new DirectoryMethods().ResetPassword(searchQuery, pw);
+                StatusMessage = new DirectoryMethods().ResetPassword(searchQuery, pw);
+                MatchCollection matches = rx.Matches(StatusMessage);
+                StringBuilder sb = new StringBuilder();
+                foreach(Match m in matches)
+                {
+                    sb.Append(m);
+                }
+                StatusMessage = sb.ToString();
              }
              return Content(StatusMessage);
 

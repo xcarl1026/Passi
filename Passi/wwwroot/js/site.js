@@ -65,7 +65,7 @@ function FilterGroupList() {
     });
 }
 
-//marked for deletion
+//Btn Action for Group Members in Directory/UserInfo page
 function GetGroupMembers(btnID) {
     searchQuery = btnID;
     var url = 'GroupDirectory?=' + searchQuery;
@@ -115,18 +115,16 @@ $('#unlockAccForm').submit(function (event) {
     })
         .then((response) => {
             return response.text();
-            //alert('Posted using Fetch');
         })
         .then((result) => {
-            //var html = result.html();
             $('#modalUnlockStatus').html(result);
         })
     event.preventDefault();
 });
 
+//Button action for group members in GroupDirectory/info page
 function GetGroupMemberInfo(objectType, btnID) {
     var url;
-   //alert("I'm " + objectType + "and name is" + btnID);
     if (objectType == "user") {
         url = "Directory?=" + btnID;
         location.replace(url);
