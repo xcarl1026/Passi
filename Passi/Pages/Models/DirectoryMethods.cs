@@ -116,7 +116,7 @@ namespace Passi.Pages.Models
             if(context != null)
             {
                 UserPrincipal userResult = UserPrincipal.FindByIdentity(context, searchQuery);
-                if (userResult != null)
+                if (userResult != null && userResult.SamAccountName != AppAuth["Username"])
                 {
                     try
                     {
@@ -127,8 +127,12 @@ namespace Passi.Pages.Models
                     {
                         passwordStatusMessage = e.Message;
                     }
+                    userResult.Dispose();
                 }
-                userResult.Dispose();
+                else
+                {
+                    passwordStatusMessage = "The password for this account cannot be reset via this application.";
+                }
                 context.Dispose();
             }
             return passwordStatusMessage;
@@ -232,28 +236,34 @@ namespace Passi.Pages.Models
             if(context != null)
             {
                 GroupPrincipal group = GroupPrincipal.FindByIdentity(context, groupVal);
-                DirectoryEntry deGroupObject = group.GetUnderlyingObject() as DirectoryEntry;
-                foreach (Principal p in group.GetMembers())
+                if (group != null)
                 {
-                    if (p.SamAccountName != null)
+                    DirectoryEntry deGroupObject = group.GetUnderlyingObject() as DirectoryEntry;
+                    foreach (Principal p in group.GetMembers())
                     {
-                        DirectoryEntry deP = p.GetUnderlyingObject() as DirectoryEntry;
-                        adGroup.GroupObjectsNames.Add(p.SamAccountName);
-                        ADGroupObject adGroupObject = new ADGroupObject();
-                        adGroupObject.SamAccountName = p.SamAccountName;
-                        adGroupObject.ObjectType = (int)deP.Properties["sAMAccountType"].Value;
-                        if (adGroupObject.ObjectType == 268435456 || adGroupObject.ObjectType == 268435457)
+                        if (p.SamAccountName != AppAuth["Username"])
                         {
-                            adGroupObject.ObjectTypeString = "group";
+                            if (p.SamAccountName != null)
+                            {
+                                DirectoryEntry deP = p.GetUnderlyingObject() as DirectoryEntry;
+                                adGroup.GroupObjectsNames.Add(p.SamAccountName);
+                                ADGroupObject adGroupObject = new ADGroupObject();
+                                adGroupObject.SamAccountName = p.SamAccountName;
+                                adGroupObject.ObjectType = (int)deP.Properties["sAMAccountType"].Value;
+                                if (adGroupObject.ObjectType == 268435456 || adGroupObject.ObjectType == 268435457)
+                                {
+                                    adGroupObject.ObjectTypeString = "group";
+                                }
+                                else
+                                {
+                                    adGroupObject.ObjectTypeString = "user";
+                                }
+                                adGroup.GroupObjects.Add(adGroupObject);
+                            }
                         }
-                        else
-                        {
-                            adGroupObject.ObjectTypeString = "user";
-                        }
-                        adGroup.GroupObjects.Add(adGroupObject);
                     }
+                    group.Dispose();
                 }
-                group.Dispose();
                 context.Dispose();
             }
             return adGroup;

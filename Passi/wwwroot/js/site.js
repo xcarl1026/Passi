@@ -68,8 +68,15 @@ function FilterGroupList() {
 //Btn Action for Group Members in Directory/UserInfo page
 function GetGroupMembers(btnID) {
     searchQuery = btnID;
-    var url = 'GroupDirectory?=' + searchQuery;
-    location.replace(url);
+    if (searchQuery == "Domain Users") {
+        alert("Default group all accounts are a part of.");
+    }
+    else
+    {
+        var url = 'GroupDirectory?=' + searchQuery;
+        location.replace(url);
+    }
+    
 }
 
 //Sets display properties for Unlock Modal
